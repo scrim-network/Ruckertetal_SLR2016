@@ -34,7 +34,7 @@ The RFILES directory contains all the scripts and data necessary to run the anal
 
 The most important functions are **Rar** and **Robs_likelihood_AR** for MCMC calibration, **Deoptim_rahm_model** and **min_res_bootstrapped** for bootstrap calibration, and **sealevel_rahm_model**, which is the Rahmstorf (2007) sea-level model.
 
-To fit the sea-level model to all methods, simply open R and source **Mega_Rahmstorf** (Note, this run ~5hrs). Then source **PlotRuckert_etal** to generate plots.
+To fit the sea-level model to all methods, simply open R and source **Mega_Rahmstorf** (Note, this runs ~5hrs). Then source **PlotRuckert_etal** to generate plots.
 
 All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. However, the program cannot be simply sourced. It requires the user to designate the length of observations and the assumptions.
 
