@@ -2,7 +2,7 @@
 
   Reference:
   Ruckert, KL, Guan, Y, Forest, FE, and Keller, K. Improving the statistical
-  method can raise the upper tail of sea-level projections, (submitted to ERL).
+  method can raise the upper tail of sea-level projections, (in review).
 
   This program is distributed in the hope that it will be useful,
   but WITH NO WARRANTY (NEITHER EXPLICITNOR IMPLICIT). We are not liable
