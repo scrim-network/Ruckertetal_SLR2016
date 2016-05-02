@@ -20,6 +20,7 @@ This code requires R with the following libraries:
 - mcmc
 - ncdf
 - coda
+- RColorBrewer
 - mvtnorm
 - DEoptim
 - compiler
