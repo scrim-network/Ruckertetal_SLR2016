@@ -18,7 +18,7 @@
 |  1. Start R                                                       |
 |  2. Type source(“Mega_Rahmstorf.R”)                               |
 |  3. Type source(“PlotRuckert_etal.R”)                             |
-|  4. Type source(“Toy_TestMCMC_plot.R”)                            |
+|  4. Type source("Toy_TestMCMC_plot.R")                            |
  ===================================================================
 
 Required software:
@@ -28,6 +28,7 @@ Required libraries:
     mcmc
     ncdf
     coda
+    RColorBrewer
     mvtnorm
     DEoptim
     compiler
