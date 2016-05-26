@@ -1,8 +1,8 @@
-# Global sea-level rise code for Ruckert et al. (in prep.)
+#Global sea-level rise code for Ruckert et al. (in prep.)
 
-README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Sun April 24 15:43:51 EST 2016
+README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Thu May 26 12:19:51 EST 2016
 
-## Citation
+##Citation
 
 This code is intended to accompany the results of
 
@@ -14,7 +14,7 @@ Please cite that paper and the Rahmstorf (2007) study when using any results gen
 	Rahmstorf S (2007) A Semi-empirical approach to projecting future sea-level rise
 	Science 315(5810) 368–370, doi:10.1126/science.1135456.
 
-## Overview
+##Overview
 
 This code requires R with the following libraries:
 - mcmc
@@ -25,7 +25,7 @@ This code requires R with the following libraries:
 - DEoptim
 - compiler
 
-This R code is intended to help users who wish to work with the sea-level rise projections or methods shown in Ruckert et al. (in prep.) in greater detail than provided in the appendix of the text. Key functionality these scripts include:
+This R code is intended to help users who wish to work with the sea-level rise projections or methods shown in Ruckert et al. (in prep.) in greater detail than provided in the appendix of the text. Key functionality of these scripts include:
 
 1. Global sea-level rise projections from 1880 to 2300 with associated probabilities
 2. How to fit a model to observations with AR1 residuals using Markov Chain Monte Carlo and Bootstrap
