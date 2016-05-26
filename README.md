@@ -38,20 +38,3 @@ The most important functions are **Rar** and **Robs_likelihood_AR** for MCMC cal
 To fit the sea-level model to all methods, simply open R and source **Mega_Rahmstorf** (Note, this runs ~5hrs). Then source **PlotRuckert_etal** to generate plots.
 
 All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. However, the program cannot be simply sourced. It requires the user to designate the length of observations and the assumptions.
-
-----
-
-    Copyright (C) 201X by Kelsey L. Ruckert
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
