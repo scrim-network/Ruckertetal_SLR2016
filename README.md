@@ -29,7 +29,7 @@ This R code is intended to help users who wish to work with the sea-level rise p
 2. How to fit a model to observations with AR1 residuals using Markov Chain Monte Carlo and Bootstrap
 3. Produces plots from the paper
 
-The RFILES directory contains all the scripts and data necessary to run the analysis along with a README file. The prerun analysis output used to generate the Ruckert et al. (in prep.) figures exceeds 100 MB, so the Workspace subdirectory is empty. For access to the prerun analysis please contact the corresponding author. _(Note that the folder directory MUST be in the same format as when downloaded otherwise the scripts will not locate the files/scripts needed to run.)_
+The RFILES directory contains all the scripts and data necessary to run the analysis along with a README file. The prerun analysis output used to generate the Ruckert et al. (in prep.) figures exceeds 100 MB. For access to the prerun analysis please contact the corresponding author. _(Note that the folder directory MUST be in the same format as when downloaded otherwise the scripts will not locate the files/scripts needed to run. Additionally, the following empty folders need to be created before running the analysis: 'Workspace', 'Figures', and 'SuppFigures'. Output will be saved to these folders.)_
 
 The most important functions are **Rar** and **Robs_likelihood_AR** for MCMC calibration, **Deoptim_rahm_model** and **min_res_bootstrapped** for bootstrap calibration, and **sealevel_rahm_model**, which is the Rahmstorf (2007) sea-level model.
 
