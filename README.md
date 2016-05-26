@@ -38,5 +38,5 @@ To fit the sea-level model to all methods, simply open R and source **Mega_Rahms
 All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. However, the program cannot be simply sourced. It requires the user to designate the length of observations and the assumptions.
 
 ##Contact
-Kelsey Ruckert: <klr324@psu.edu>
+Kelsey Ruckert: <klr324@psu.edu>  
 Corresponding author: Klaus Keller at <klaus@psu.edu>
