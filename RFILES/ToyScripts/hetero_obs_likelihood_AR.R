@@ -47,17 +47,10 @@ log.lik = function(p) # model.p is the dimension of model parameters
   y.mod = model.out$mod.obs
   
   llik.y  = 0
-  ##---------------------------- STOP ---------------------------------------##
-  #Set the observation to either iid observations or AR(1) observations (both named obs)
-  #resid.y = obs-y.mod # estimate the residuals from the model simulation
-  #---OR
-  # for the heteroskedastic observations named H.obs
   resid.y = H.obs-y.mod
   ##---------------------------- STOP ---------------------------------------##
-  #Set the likelihood to either iid observations or AR(1) observations
+  #Set the likelihood for AR(1) observations
   llik.y  = logl.ar1(resid.y, sigma.y, rho.y,y.meas.err) # AR(1) observations
-  #---OR
-  #llik.y  = sum(dnorm(resid.y, sigma.y, log=TRUE)) #IID observations
   ##-------------------------------------------------------------------------##
   
   llik = llik.y # assume residuals are independent
@@ -70,7 +63,7 @@ log.pri = function(p)
   
   sigma.y = p[model.p+1]
   rho.y = p[model.p+2]
-
+  
   in.range = all(p > bound.lower) & all(p < bound.upper)
   
   if(in.range) {
@@ -78,7 +71,7 @@ log.pri = function(p)
   } else {
     lpri = -Inf
   }
-
+  
   lpri
 }
 
@@ -93,7 +86,7 @@ log.post = function(p)
   }
   lpost
 }
- 
+
 
 # calculate a scale matrix to transform a iid normal distribution,
 # which defines a multivariate normal proposal distribution for MCMC
