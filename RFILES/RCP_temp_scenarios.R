@@ -21,16 +21,23 @@
 # Various RCP temperature scenarios:
 # install.packages('ncdf')
 library(ncdf)
+library(ncdf4)
 source("Data/temp_sea_2300.R")
 
 # RCP 2.6 -----------------------------------------------------------------
-fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp26.r1i1p1.18600101-22991230.nc")
+# fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp26.r1i1p1.18600101-22991230.nc")
 
-temp_K<-get.var.ncdf(fid1,"tas")
-year_nc<-get.var.ncdf(fid1,"time")
+# temp_K<-get.var.ncdf(fid1,"tas")
+# year_nc<-get.var.ncdf(fid1,"time")
 
 #Close file
-close.ncdf(fid1)
+# close.ncdf(fid1)
+
+# If ncdf is unavailable un comment the following code and use ncdf4 library
+fid1 <- nc_open("Data/global.tas.aann.HadGEM2-ES.historical+rcp26.r1i1p1.18600101-22991230.nc")
+temp_K <- ncvar_get(fid1,"tas")
+year_nc <- ncvar_get(fid1,"time")
+nc_close(fid1)
 
 # Convert Kelvin to Celsius
 # [°C] = [K] − 273.15
@@ -42,13 +49,19 @@ tempRCP26_anom = temp_C - respect_20th
 tempRCP26_anom = c(data[1:134,2], tempRCP26_anom[155:241])
 
 # RCP 4.5 -----------------------------------------------------------------
-fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp45.r1i1p1.18600101-22991230.nc")
+# fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp45.r1i1p1.18600101-22991230.nc")
 
-temp_K<-get.var.ncdf(fid1,"tas")
-year_nc<-get.var.ncdf(fid1,"time")
+# temp_K<-get.var.ncdf(fid1,"tas")
+# year_nc<-get.var.ncdf(fid1,"time")
 
 #Close file
-close.ncdf(fid1)
+# close.ncdf(fid1)
+
+# If ncdf is unavailable un comment the following code and use ncdf4 library
+fid1 <- nc_open("Data/global.tas.aann.HadGEM2-ES.historical+rcp45.r1i1p1.18600101-22991230.nc")
+temp_K <- ncvar_get(fid1,"tas")
+year_nc <- ncvar_get(fid1,"time")
+nc_close(fid1)
 
 temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
@@ -57,13 +70,19 @@ tempRCP45_anom = temp_C - respect_20th
 tempRCP45_anom = c(data[1:134,2], tempRCP45_anom[155:241])
 
 # RCP 6.0 -----------------------------------------------------------------
-fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp60.r1i1p1.18600101-20991230.nc")
+# fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp60.r1i1p1.18600101-20991230.nc")
 
-temp_K<-get.var.ncdf(fid1,"tas")
-year_nc<-get.var.ncdf(fid1,"time")
+# temp_K<-get.var.ncdf(fid1,"tas")
+# year_nc<-get.var.ncdf(fid1,"time")
 
 #Close file
-close.ncdf(fid1)
+# close.ncdf(fid1)
+
+# If ncdf is unavailable un comment the following code and use ncdf4 library
+fid1 <- nc_open("Data/global.tas.aann.HadGEM2-ES.historical+rcp60.r1i1p1.18600101-20991230.nc")
+temp_K <- ncvar_get(fid1,"tas")
+year_nc <- ncvar_get(fid1,"time")
+nc_close(fid1)
 
 temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
@@ -72,13 +91,19 @@ tempRCP60_anom = temp_C - respect_20th
 tempRCP60_anom = c(data[1:134,2], tempRCP60_anom[155:241])
 
 # RCP 8.5 -----------------------------------------------------------------
-fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp85.r1i1p1.18600101-22991230.nc")
+# fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp85.r1i1p1.18600101-22991230.nc")
 
-temp_K<-get.var.ncdf(fid1,"tas")
-year_nc<-get.var.ncdf(fid1,"time")
+# temp_K<-get.var.ncdf(fid1,"tas")
+# year_nc<-get.var.ncdf(fid1,"time")
 
 #Close file
-close.ncdf(fid1)
+# close.ncdf(fid1)
+
+# If ncdf is unavailable un comment the following code and use ncdf4 library
+fid1 <- nc_open("Data/global.tas.aann.HadGEM2-ES.historical+rcp85.r1i1p1.18600101-22991230.nc")
+temp_K <- ncvar_get(fid1,"tas")
+year_nc <- ncvar_get(fid1,"time")
+nc_close(fid1)
 
 temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
