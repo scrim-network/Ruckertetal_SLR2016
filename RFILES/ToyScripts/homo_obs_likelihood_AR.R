@@ -1,13 +1,13 @@
 #################################################################################
 #
-#  -file = "toy_obs_likelihood_AR.R"   Code written July 2014
+#  -file = "homo_obs_likelihood_AR.R"   Code written July 2014
 #  - Author: Yawen Guan (yig5031@psu.edu)
 #  - Edits by: Kelsey Ruckert (klr324@psu.edu) February 2015
 #
 #  -This function computes the log likelihood for a zero-mean AR1 process from
 #       observations. The observations include i.i.d. and AR(1) assuming
 #       homoskedastic or heteroskedastic. The tests using this program are
-#       described in the appendix of Ruckert et al. (GRL 2016). For further
+#       described in the appendix of Ruckert et al. (2016). For further
 #       description and references, please read the paper
 #       and the appendix.
 #
