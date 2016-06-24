@@ -36,10 +36,12 @@
 rm(list =ls()) #Clear global environment
 library(compiler)
 enableJIT(3)
+# set.seed(1234) # For reproducibility
+# set.seed(111)
 
 #source("Scripts/put_fig_letter.R")
 #----------------------- Test #1: Length of Observations ----------------------------#
-load("Workspace/testiidall.RData") #Load results from test #1
+# load("Workspace/testiidall.RData") #Load results from test #1
 
 #------------ Test #2: Adding in Autocorrelation & Test 3: Heteroskedastic Errors -------------#
 ################# Step 1: Set up the true model & Generate generate AR 1 errors
@@ -74,7 +76,7 @@ fn = function(parameters, x, obs){
   b=parameters[2]
   #set up equation: a+bx= observations  
   data = a+b*x
-  #set up equation to find residuals
+  # Estimate the residuals
   resid=obs-data
   #Find root mean square error
   rmse = sqrt(mean(resid^2))
@@ -92,8 +94,6 @@ y.obs= model(parameter,x)
 #Plot the observations
 #plot(x,obs, pch=20, xlab="x", ylab="Data")
 #lines(x, y.obs$mod.obs, col="red", lwd=3)
-#lines(x,err_pos, col="slateblue", lwd=3)
-#lines(x,err_neg, col="slateblue", lwd=3)
 
 res = obs-y.obs$mod.obs #Estimate the residuals
 
@@ -106,18 +106,14 @@ rho[3]=ac$acf[3]
 rho[4]=ac$acf[4]
 rho[5]=ac$acf[5]
 
-################# Step 5:  Set up and Run MCMC
-##---------------------- STOP ---------------------------------------##
-# Make sure the likelihood is set for AR(1) observations! in "toy_obs_likelihood_AR.R"
-##-------------------------------------------------------------------##
-######################### Set up and Run MCMC #######################
+################# Step 5:  Set up and Run MCMCfor AR(1) homoskedastic
 bound.lower = c(-10,-10,0,-0.99)
 bound.upper = c(10,10,1,0.99)
 y.meas.err=rep(0,length(y.obs)) #Error for homoskedastic
 model.p=2
 parnames=c("a","b","sigma.y","phi11")
 source("ToyScripts/toy.R")
-source("ToyScripts/toy_obs_likelihood_AR_1.R")
+source("ToyScripts/homo_obs_likelihood_AR.R")
 
 p = c(result$par[1], result$par[2], sd(res), rho[2])
 p0 = c(1,0.3,0.6, 0.5)
@@ -172,8 +168,8 @@ for(i in 1:h) {
 
 ################# Step 7:  Analyze the Results
 # Save the probability density functions of the parameters
-pdfa = density(prechain1[,1])
-pdfb = density(prechain1[,2])
+pdfa = density(prechain1[-burnin,1])
+pdfb = density(prechain1[-burnin,2])
 
 #Calculate the 90% Confidence Interval
 #five = quantile(hindcast,0.05) #for one data point
@@ -193,11 +189,78 @@ polygon(range_y, range_x, col="red")
 points(x, obs, pch=20)
 legend("topleft", c("90% CI","Observations"), pch=c(15,20),bty="n", col=c("red","black"))
 
+# AR1
+ar.005 <-
+  ar.995 <- rep(NA,datalength) # 99%
+ar.45 <- ar.995; ar.55 <- ar.995 # 10%
+ar.40 <- ar.995; ar.60 <- ar.995 # 20%
+ar.35 <- ar.995; ar.65 <- ar.995 # 30%
+ar.30 <- ar.995; ar.70 <- ar.995 # 40%
+ar.25 <- ar.995; ar.75 <- ar.995 # 50%
+ar.20 <- ar.995; ar.80 <- ar.995 # 60%
+ar.15 <- ar.995; ar.85 <- ar.995 # 70%
+ar.10 <- ar.995; ar.90 <- ar.995 # 80%
+ar.5 <- ar.995; ar.95 <- ar.995  # 90%
+ar.4 <- ar.995; ar.96 <- ar.995  # 92%
+ar.025 <- ar.995; ar.975 <- ar.995 # 95%
+ar.02 <- ar.995; ar.98 <- ar.995   # 96%
+ar.015 <- ar.995; ar.985 <- ar.995 # 97%
+ar.01 <- ar.995; ar.99 <- ar.995   # 98%
+ar.0 <- ar.995; ar.100 <- ar.995   # 100%
+
+for(i in 1:datalength){
+  ar.45[i] = quantile(hindcast[,i],0.45); ar.55[i] = quantile(hindcast[,i],0.55)
+  ar.40[i] = quantile(hindcast[,i],0.40); ar.60[i] = quantile(hindcast[,i],0.60)
+  ar.35[i] = quantile(hindcast[,i],0.35); ar.65[i] = quantile(hindcast[,i],0.65)
+  ar.30[i] = quantile(hindcast[,i],0.30); ar.70[i] = quantile(hindcast[,i],0.70)
+  ar.25[i] = quantile(hindcast[,i],0.25); ar.75[i] = quantile(hindcast[,i],0.75)
+  ar.20[i] = quantile(hindcast[,i],0.20); ar.80[i] = quantile(hindcast[,i],0.80)
+  ar.15[i] = quantile(hindcast[,i],0.15); ar.85[i] = quantile(hindcast[,i],0.85)
+  ar.10[i] = quantile(hindcast[,i],0.10); ar.90[i] = quantile(hindcast[,i],0.90)
+  ar.5[i] = quantile(hindcast[,i],0.05); ar.95[i] = quantile(hindcast[,i],0.95)
+  ar.4[i] = quantile(hindcast[,i],0.04); ar.96[i] = quantile(hindcast[,i],0.96)
+  ar.025[i] = quantile(hindcast[,i],0.025); ar.975[i] = quantile(hindcast[,i],0.975)
+  ar.02[i] = quantile(hindcast[,i],0.02); ar.98[i] = quantile(hindcast[,i],0.98)
+  ar.015[i] = quantile(hindcast[,i],0.015); ar.985[i] = quantile(hindcast[,i],0.985)
+  ar.01[i] = quantile(hindcast[,i],0.01); ar.99[i] = quantile(hindcast[,i],0.99)
+  ar.005[i] = quantile(hindcast[,i],0.005); ar.995[i] = quantile(hindcast[,i],0.995)
+  ar.0[i] = quantile(hindcast[,i],0); ar.100[i] = quantile(hindcast[,i],1)
+}
+
+range_ar_10=c(ar.45, rev(ar.55)); range_ar_20=c(ar.40, rev(ar.60))
+range_ar_30=c(ar.35, rev(ar.65)); range_ar_40=c(ar.30, rev(ar.70))
+range_ar_50=c(ar.25, rev(ar.75)); range_ar_60=c(ar.20, rev(ar.80))
+range_ar_70=c(ar.15, rev(ar.85)); range_ar_80=c(ar.10, rev(ar.90))
+range_ar_90=c(ar.5, rev(ar.95)); range_ar_92=c(ar.4, rev(ar.96))
+range_ar_95=c(ar.025, rev(ar.975)); range_ar_96=c(ar.02, rev(ar.98))
+range_ar_97=c(ar.015, rev(ar.985)); range_ar_98=c(ar.01, rev(ar.99))
+range_ar_99=c(ar.005, rev(ar.995)); range_ar_100=c(ar.0, rev(ar.100))
+
+plot(x, obs, type="l",xlab="x",ylab="Observations") #, ylim=c(-2,6))
+points(x, obs, pch=20, cex=0.85)
+polygon(range_y, range_ar_10, col="red")
+polygon(range_y, range_ar_20, col="red")
+polygon(range_y, range_ar_30, col="red")
+polygon(range_y, range_ar_40, col="red")
+polygon(range_y, range_ar_50, col="red")
+polygon(range_y, range_ar_60, col="red")
+polygon(range_y, range_ar_70, col="red")
+polygon(range_y, range_ar_80, col="red")
+polygon(range_y, range_ar_90, col="red")
+polygon(range_y, range_ar_92, col="red")
+polygon(range_y, range_ar_95, col="red")
+polygon(range_y, range_ar_96, col="red")
+polygon(range_y, range_ar_97, col="red")
+polygon(range_y, range_ar_98, col="red")
+polygon(range_y, range_ar_99, col="red")
+polygon(range_y, range_ar_100, col="red")
+
 ################# Step 8:  Save the Homoskedastic Results
 # Save the pdf of the parameters
-homtwoh_a = density(prechain1[,1]) ; homtwoh_b = density(prechain1[,2])
+homtwoh_a = density(prechain1[-burnin,1]) ; homtwoh_b = density(prechain1[-burnin,2])
 #Save the 90% confidence interval
 homtwoh_x = range_x ; homtwoh_y = range_y
 
 #Again save the workspace:
-save.image(file = "Workspace/testiidall.RData")
+# save.image(file = "Workspace/testiidall.RData")
+save.image(file = "Workspace/test_AR1_data.RData")
