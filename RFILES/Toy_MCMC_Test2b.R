@@ -38,6 +38,8 @@ rm(list =ls()) #Clear global environment
 library(mvtnorm)
 library(compiler)
 enableJIT(3)
+# set.seed(1234) # for reproducibility
+# set.seed(111)
 
 source("Scripts/put_fig_letter.R")
 #----------------------- Test #1: Length of Observations ----------------------------#
@@ -74,7 +76,6 @@ obs = true.obs$mod.obs + t.s #Add the observations and the residuals
 
 ################# Step 2: Generate time varying errors for heteroskedastic assumption
 #Generate varying errors for Test #3
-# NOTE: 2.9-0.9 are arbitruary numbers
 err.1 = sigma.inov/5
 err.end = err.1*0.25
 
@@ -93,7 +94,7 @@ fn = function(parameters, x, H.obs){
   b=parameters[2]
   #set up equation: a+bx= observations
   data = a+b*x
-  #set up equation to find residuals
+  # Estimate the residuals
   resid=obs-data
   #Find root mean square error
   rmse = sqrt(mean(resid^2))
@@ -125,13 +126,7 @@ rho[3]=ac$acf[3]
 rho[4]=ac$acf[4]
 rho[5]=ac$acf[5]
 
-################# Step 5:  Set up and Run MCMC
-##---------------------- STOP ---------------------------------------##
-# Make sure the likelihood is set for AR(1) observations! in "toy_obs_likelihood_AR.R"
-## AND
-# Make sure the observations are set to use the heteroskedastic observations (H.obs)
-##-------------------------------------------------------------------##
-######################### Set up and Run MCMC #######################
+################# Step 5:  Set up and Run MCMC for AR(1) heteroskedastic
 bound.lower = c(-10,-10,0,-0.99)
 bound.upper = c(10,10,1,0.99)
 y.meas.err=errors # heteroskedastic errors
@@ -172,7 +167,7 @@ plot(prechain1[-burnin,4], type="l", ylab="Rho", xlab="Number of Runs", main="")
 
 ################# Step 6:  Estimate the Hindcast
 n=length(prechain1[,1])
-ssprechain1 = prechain1[seq(length(burnin),n,1000),] #Only a subsequent number is neccessary (~10,000)
+ssprechain1 = prechain1[seq(length(burnin),n,100),] #Only a subsequent number is neccessary (~10,000)
 h = length(ssprechain1[,1])
 
 #Calculate the simulated model hindcasts
@@ -195,10 +190,10 @@ for(i in 1:h) {
 
 ################# Step 7:  Analyze the Results
 # Save the probability density functions of the parameters
-pdfa = density(prechain1[,1])
-pdfb = density(prechain1[,2])
-pdfsig = density(prechain1[,3])
-pdfrho = density(prechain1[,4])
+pdfa = density(prechain1[-burnin,1])
+pdfb = density(prechain1[-burnin,2])
+pdfsig = density(prechain1[-burnin,3])
+pdfrho = density(prechain1[-burnin,4])
 
 #Calculate the Surprise index by observation the ratio of outliers to the expected # of outliers
 # The confidence intervals in the paper are:
@@ -223,25 +218,90 @@ lines(x,err_pos, col="slateblue", lwd=3)
 lines(x,err_neg, col="slateblue", lwd=3)
 legend("topleft", c("90% CI","Observations"), pch=c(15,20),bty="n", col=c("red","black"))
 
+het.005 <-
+  het.995 <- rep(NA,datalength) # 99%
+het.45 <- het.995; het.55 <- het.995 # 10%
+het.40 <- het.995; het.60 <- het.995 # 20%
+het.35 <- het.995; het.65 <- het.995 # 30%
+het.30 <- het.995; het.70 <- het.995 # 40%
+het.25 <- het.995; het.75 <- het.995 # 50%
+het.20 <- het.995; het.80 <- het.995 # 60%
+het.15 <- het.995; het.85 <- het.995 # 70%
+het.10 <- het.995; het.90 <- het.995 # 80%
+het.5 <- het.995; het.95 <- het.995  # 90%
+het.4 <- het.995; het.96 <- het.995  # 92%
+het.025 <- het.995; het.975 <- het.995 # 95%
+het.02 <- het.995; het.98 <- het.995   # 96%
+het.015 <- het.995; het.985 <- het.995 # 97%
+het.01 <- het.995; het.99 <- het.995   # 98%
+het.0 <- het.995; het.100 <- het.995   # 100%
+
+for(i in 1:datalength){
+  het.45[i] = quantile(hindcast[,i],0.45); het.55[i] = quantile(hindcast[,i],0.55)
+  het.40[i] = quantile(hindcast[,i],0.40); het.60[i] = quantile(hindcast[,i],0.60)
+  het.35[i] = quantile(hindcast[,i],0.35); het.65[i] = quantile(hindcast[,i],0.65)
+  het.30[i] = quantile(hindcast[,i],0.30); het.70[i] = quantile(hindcast[,i],0.70)
+  het.25[i] = quantile(hindcast[,i],0.25); het.75[i] = quantile(hindcast[,i],0.75)
+  het.20[i] = quantile(hindcast[,i],0.20); het.80[i] = quantile(hindcast[,i],0.80)
+  het.15[i] = quantile(hindcast[,i],0.15); het.85[i] = quantile(hindcast[,i],0.85)
+  het.10[i] = quantile(hindcast[,i],0.10); het.90[i] = quantile(hindcast[,i],0.90)
+  het.5[i] = quantile(hindcast[,i],0.05); het.95[i] = quantile(hindcast[,i],0.95)
+  het.4[i] = quantile(hindcast[,i],0.04); het.96[i] = quantile(hindcast[,i],0.96)
+  het.025[i] = quantile(hindcast[,i],0.025); het.975[i] = quantile(hindcast[,i],0.975)
+  het.02[i] = quantile(hindcast[,i],0.02); het.98[i] = quantile(hindcast[,i],0.98)
+  het.015[i] = quantile(hindcast[,i],0.015); het.985[i] = quantile(hindcast[,i],0.985)
+  het.01[i] = quantile(hindcast[,i],0.01); het.99[i] = quantile(hindcast[,i],0.99)
+  het.005[i] = quantile(hindcast[,i],0.005); het.995[i] = quantile(hindcast[,i],0.995)
+  het.0[i] = quantile(hindcast[,i],0); het.100[i] = quantile(hindcast[,i],1)
+}
+
+range_het_10=c(het.45, rev(het.55)); range_het_20=c(het.40, rev(het.60))
+range_het_30=c(het.35, rev(het.65)); range_het_40=c(het.30, rev(het.70))
+range_het_50=c(het.25, rev(het.75)); range_het_60=c(het.20, rev(het.80))
+range_het_70=c(het.15, rev(het.85)); range_het_80=c(het.10, rev(het.90))
+range_het_90=c(het.5, rev(het.95)); range_het_92=c(het.4, rev(het.96))
+range_het_95=c(het.025, rev(het.975)); range_het_96=c(het.02, rev(het.98))
+range_het_97=c(het.015, rev(het.985)); range_het_98=c(het.01, rev(het.99))
+range_het_99=c(het.005, rev(het.995)); range_het_100=c(het.0, rev(het.100))
+
+plot(x, H.obs, type="l",xlab="x",ylab="Observations") #, ylim=c(-2,6))
+points(x, H.obs, pch=20, cex=0.85)
+polygon(range_y, range_het_10, col="red")
+polygon(range_y, range_het_20, col="red")
+polygon(range_y, range_het_30, col="red")
+polygon(range_y, range_het_40, col="red")
+polygon(range_y, range_het_50, col="red")
+polygon(range_y, range_het_60, col="red")
+polygon(range_y, range_het_70, col="red")
+polygon(range_y, range_het_80, col="red")
+polygon(range_y, range_het_90, col="red")
+polygon(range_y, range_het_92, col="red")
+polygon(range_y, range_het_95, col="red")
+polygon(range_y, range_het_96, col="red")
+polygon(range_y, range_het_97, col="red")
+polygon(range_y, range_het_98, col="red")
+polygon(range_y, range_het_99, col="red")
+polygon(range_y, range_het_100, col="red")
+
 ################# Step 8:  Save the Heteroskedastic Results (for 200 observations for test 2)
 # Save the pdf of the parameters
-hettwoh_a = density(prechain1[,1]) ; hettwoh_b = density(prechain1[,2])
+hettwoh_a = density(prechain1[-burnin,1]) ; hettwoh_b = density(prechain1[-burnin,2])
 #Save the 90% confidence interval
 hettwoh_x = range_x ; hettwoh_y = range_y
 
-#Again save the workspace: (for 200 observations for test 2)
-#save.image(file = "Workspace/testiidall_hettest.RData")
+# save the information from running calibration with 200 data points
+save.image(file = "Workspace/test_het_data.RData")
 
 ################# Step 8:  Save the varying number of observation results (test 1)
 #After running each analysis varying the observations save the pdf
 
-two_a = density(prechain1[,1]) ; two_b = density(prechain1[,2]); two_s = density(prechain1[,3]) ; two_r = density(prechain1[,4])
-five_a = density(prechain1[,1]) ; five_b = density(prechain1[,2]); five_s = density(prechain1[,3]) ; five_r = density(prechain1[,4])
-twent_a = density(prechain1[,1]) ; twent_b = density(prechain1[,2]); twent_s = density(prechain1[,3]) ; twent_r = density(prechain1[,4])
-fity_a = density(prechain1[,1]) ; fity_b = density(prechain1[,2]); fity_s = density(prechain1[,3]) ; fity_r = density(prechain1[,4])
-hund_a = density(prechain1[,1]) ; hund_b = density(prechain1[,2]); hund_s = density(prechain1[,3]) ; hund_r = density(prechain1[,4])
-hund50_a = density(prechain1[,1]) ; hund50_b = density(prechain1[,2]); hund50_s = density(prechain1[,3]) ; hund50_r = density(prechain1[,4])
-twoh_a = density(prechain1[,1]) ; twoh_b = density(prechain1[,2]); twoh_s = density(prechain1[,3]) ; twoh_r = density(prechain1[,4])
+two_a = density(prechain1[-burnin,1]) ; two_b = density(prechain1[-burnin,2]); two_s = density(prechain1[-burnin,3]) ; two_r = density(prechain1[-burnin,4])
+five_a = density(prechain1[-burnin,1]) ; five_b = density(prechain1[-burnin,2]); five_s = density(prechain1[-burnin,3]) ; five_r = density(prechain1[-burnin,4])
+twent_a = density(prechain1[-burnin,1]) ; twent_b = density(prechain1[-burnin,2]); twent_s = density(prechain1[-burnin,3]) ; twent_r = density(prechain1[-burnin,4])
+fity_a = density(prechain1[-burnin,1]) ; fity_b = density(prechain1[-burnin,2]); fity_s = density(prechain1[-burnin,3]) ; fity_r = density(prechain1[-burnin,4])
+hund_a = density(prechain1[-burnin,1]) ; hund_b = density(prechain1[-burnin,2]); hund_s = density(prechain1[-burnin,3]) ; hund_r = density(prechain1[-burnin,4])
+hund50_a = density(prechain1[-burnin,1]) ; hund50_b = density(prechain1[-burnin,2]); hund50_s = density(prechain1[-burnin,3]) ; hund50_r = density(prechain1[-burnin,4])
+twoh_a = density(prechain1[-burnin,1]) ; twoh_b = density(prechain1[-burnin,2]); twoh_s = density(prechain1[-burnin,3]) ; twoh_r = density(prechain1[-burnin,4])
 
 
 #After running each analysis varying the observations save the 90% Confidence Interval
@@ -253,11 +313,20 @@ hund_x = range_x ; hund_y = range_y
 hund50_x = range_x ; hund50_y = range_y
 twoh_x = range_x ; twoh_y = range_y
 
-#Save the workspace:
+#Save the workspace: running the results for various dataset lengths from 200 to 2
 save.image(file = "Workspace/test_observation_num_hetData.RData")
 #load("Workspace/test_observation_num_hetData.RData")
 
 #------------------------------- Sup. Figure 7 -----------------------------------#
+mm_TO_inches = function(mm){
+  mm * 0.039370
+}
+
+single_column = mm_TO_inches(84)
+double_column = mm_TO_inches(174)
+maximum_width = mm_TO_inches(234)
+column_height=2.7
+
 # Compare the surprise index and the pdfs for when the number of observations changes:
 # pdf(file="SuppFigures/nRuckertetal_sup8.pdf", family="Helvetica", height=5.4, width=6.7,pointsize=11)
 # par(mfrow=c(2,2),mgp=c(1.5,.5,0), mar=c(3.5,4,4,1))
@@ -267,7 +336,8 @@ test.colors[4] = "gray"
 circlesize = seq(from=1, to=4, length.out=7)
 
 setEPS()
-postscript(file="SuppFigures/sfigure7a_7d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=5.4, pointsize=11)
+postscript(file="SuppFigures/sfigure7a_7d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", 
+width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 
 # 1) PDF
@@ -299,8 +369,8 @@ five = surprise[1:16,5]
 two = surprise[1:16,3]
 
 #par(mgp=c(1.5,.5,0), mar=c(3.5, 3, 4, 2))
-plot(percent, percent, typ="l", lty=2, ylab="Percent covered [%]",
-xlab="Credible interval [%]", lwd=2, ylim=c(0,100))
+plot(percent, percent, typ="l", lty=2, ylab="Observed relative frequency [%]",
+xlab="Forecast probability [%] (credible interval)", lwd=2, ylim=c(0,100))
 # points(percent, two*100, pch=20, col=test.colors[1], cex=circlesize[1])
 # points(percent, five*100, pch=20, col=test.colors[2], cex=circlesize[2])
 # points(percent, twenty*100, pch=20, col=test.colors[3], cex=circlesize[3])
@@ -341,8 +411,8 @@ lines(c(-10,10),c(50,50), lwd=2, lty=3)
 put.fig.letter("b.",font=2)
 
 #par(mgp=c(1.5,.5,0), mar=c(5, 3, 2.5, 2))
-plot(percent, percent, type="l", lty=2, ylab="Percent covered [%]",
-xlab="Credible interval [%]", lwd=2, xlim=c(90,100), ylim=c(90,100))
+plot(percent, percent, type="l", lty=2, ylab="Observed relative frequency [%]",
+xlab="Forecast probability [%] (credible interval)", lwd=2, xlim=c(90,100), ylim=c(90,100))
 # points(percent, two*100, pch=20, col=test.colors[1], cex=circlesize[1])
 # points(percent, five*100, pch=20, col=test.colors[2], cex=circlesize[2])
 # points(percent, twenty*100, pch=20, col=test.colors[3], cex=circlesize[3])
