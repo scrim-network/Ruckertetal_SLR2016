@@ -1,6 +1,6 @@
 #################################################################################
 #
-#  -file = "toy_obs_likelihood_AR.R"   Code written July 2014
+#  -file = "hetero_obs_likelihood_AR.R"   Code written July 2014
 #  - Author: Yawen Guan (yig5031@psu.edu)
 #  - Edits by: Kelsey Ruckert (klr324@psu.edu) February 2015
 #
