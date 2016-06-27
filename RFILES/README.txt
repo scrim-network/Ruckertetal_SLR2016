@@ -18,7 +18,6 @@
 |  1. Start R                                                       |
 |  2. Type source(“Mega_Rahmstorf.R”)                               |
 |  3. Type source(“PlotRuckert_etal.R”)                             |
-|  4. Type source("Toy_TestMCMC_plot.R")                            |
  ===================================================================
 
 Required software:
@@ -26,7 +25,7 @@ Required software:
 
 Required libraries:
     mcmc
-    ncdf
+    ncdf or ncdf4
     coda
     RColorBrewer
     mvtnorm
@@ -67,13 +66,14 @@ Required libraries:
 |  1. Toy_MCMC_Test1.R: Generates a User defined number of iid observations and fits a 
 |     simple model to the observations with MCMC. 
 |  2. Toy_MCMC_Test2a.R: Generates 200 homoskedastic AR observations and fits a simple 
-|     two-parameter linear modelmodel to the observations with MCMC. 
+|     two-parameter linear model to the observations with MCMC. 
 |  3. Toy_MCMC_Test2b.R: Generates 200 heteroskedastic AR observations and fits a simple 
 |     two-parameter linear modelmodel to the observations with MCMC.
 |  4. Toy_TestMCMC_plots.R: Loads in the results from test scripts 1, 2a, and 2b to test 
-|     why the surprise index fails in the low probabilities. It produces S. Fig. 6-8.
+|     why the surprise index fails in the low probabilities. It produces S. Fig. 8.
 |  5. Toy_bootstrap.R: This program will run and plot the bootstrap method for a simple 
 |     two-parameter linear model with AR1 residuals. 
+|  6. testAR1vsIID.R: This program assesses the impact of AR1 representation on model calibration.  
  =============================================================================
 
 Credits:
