@@ -134,6 +134,38 @@ summary(homChainBurnin) # Print the median model parameters (a, T0, H0, sigma, r
 # Method C: Markov Chain Monte Carlo AR(1) Heteroskedastic:
 summary(hetChainBurnin) # Print the median model parameters (a, T0, H0, sigma, rho)
 
+# Find mode and 99%
+getmode <- function(v) { #Calculate mode http://www.tutorialspoint.com/r/r_mean_median_mode.htm
+    uniqv <- unique(v)
+    uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+# Bootstrap
+getmode(parm[,1]); getmode(parm[,2]); getmode(initialvalue); getmode(sigma); rho[2]
+
+# homoskedastic
+hom.rounded = round(homChainBurnin,5)
+getmode(hom.rounded[,1]); getmode(hom.rounded[,2]); getmode(hom.rounded[,3])
+getmode(hom.rounded[,4]); getmode(hom.rounded[,5])
+
+# Heteroskedastic
+het.rounded = round(hetChainBurnin,5)
+getmode(het.rounded[,1]); getmode(het.rounded[,2]); getmode(het.rounded[,3])
+getmode(het.rounded[,4]); getmode(het.rounded[,5])
+
+# Print the 99% model parameters (a, T0, H0, sigma, rho)
+for(i in 1:5){
+  print(quantile(homChainBurnin[,i], 0.99))
+}
+  for(i in 1:5){
+  print(quantile(hetChainBurnin[,i], 0.99))
+  }
+# "Bootstrap: (a, T0)
+for(i in 1:2){
+  print(quantile(parm[,i], 0.99))
+}
+# H0, sigma
+quantile(initialvalue, 0.99); quantile(sigma, 0.99)
+
 #------------------- Step 5: Save the Current Workspace --------------------------
 save.image(file = "Workspace/mega_R_methods_workspace.RData")
 
