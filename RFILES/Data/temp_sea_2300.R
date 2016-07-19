@@ -33,39 +33,42 @@
 #
 ########################################################################################
 
-#Read in temperature and sea level data
-data = read.csv("Data/NOAA_IPCC_RCPtempsscenarios.csv")
+# Read in the information from Smith (2008) historical temperatures and the RCP8.5 scenario.
+# alltime, time in years from 1880 to 2300 (5yr increments)
+# hist.temp, historical global mean temperatures from 1880 to 2002 in C
+# rcp85, merged historical + rcp 8.5 temperatures from 1880 to 2300 in C
+# scenario_time, , time in years from 1880 to 2100 (5yr increments)
+# max to b2, merged historical + IPCC temperature scenarios from 1880-2100 in C (5yr increments)
+temp.data = read.csv("Data/NOAA_IPCC_RCPtempsscenarios.csv")
+alltime = temp.data[, 1]
+hist.temp = temp.data[1:122, 2]
+rcp85 = temp.data[, 4]
+scenario_time = temp.data[1:45, 5]
+max = temp.data[1:45, 6]
+min = temp.data[1:45, 7]
+a1fi = temp.data[1:45, 8]
+a1b = temp.data[1:45, 9]
+a1t = temp.data[1:45, 10]
+a2 = temp.data[1:45, 11]
+b1 = temp.data[1:45, 12]
+b2 = temp.data[1:45, 13]
 
-#Historical time frame and temperatures from NOAA
-hist.temp = data[1:122,2] #temperature data
-alltime = data[,1] #1880-2300 (1 yr incriments)
-
-#IPCC temperature scenarios added to NOAA temperatures from 1880-2100
-scenario_time = data[1:45,5] #1880-2100 (5yr incriments)
-max = data[1:45,6]  #6.195 C in 2100
-min = data[1:45,7]  #1.773 C in 2100
-a1fi = data[1:45,8] #4.892 C in 2100
-a1b = data[1:45,9]  #3.347 C in 2100
-a1t = data[1:45,10] #2.938 C in 2100
-a2 = data[1:45,11]  #4.194 C in 2100
-b1 = data[1:45,12]  #2.382 C in 2100
-b2 = data[1:45,13]  #3.087 C in 2100
-
-#RCP 8.5 temperatures from 2014-2300 and NOAA historical temps from 1880-2013
-rcp85 = data[,4]    #4.284 C in 2100 and 9.849284058 C in 2300
-
-# Historical global mean sea-levels from tide gauges & estimated errors
+# Read in and extract three key vectors from the Church and White (2006) sea-level file.
+# year, time in years from 1880 to 2001, 1yr increments
+# slr, global mean sea level in mm
+# err.obs, global mean sea level measurement error in mm
+# Divide vectors by 10 to convert to cm
 church = read.table("Data/church_13221.txt")
-year = church[11:132, 1] #timeframe 1880 to 2002 in 1yre incriments
-slr = church[11:132, 2]/10 #mm to cm
-err.obs = church[11:132,3]/10 #mm to cm
+year = church[11:132, 1]
+slr = church[11:132, 2]/10
+err.obs = church[11:132, 3]/10
 
-## To match Rahmstorf (2007) Sea-leve values are set in reference to the 1990 mean SLR value
+## Estimate sea-level anomalies with respect to the 1990 mean sea-level value (matching Rahmstorf (2007))
 SLR1990 = slr[111]  #111 equals the year 1990
 slr = slr - SLR1990
 
-# Set the observational errors by adding and subtracting the errors to the sea-level values
-err_pos=slr+err.obs
-err_neg=slr-err.obs
+# Calculate sea level -/+ observation errors.
+err_pos = slr + err.obs
+err_neg = slr - err.obs
 
 ######################################## END ###############################################

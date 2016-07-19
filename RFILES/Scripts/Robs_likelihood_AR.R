@@ -44,7 +44,7 @@ log.lik = function(p) # model.p is the dimension of model parameters
   
   llik.y  = 0
   resid.y = slr-y.mod # estimate the residuals from the model simulation
-  llik.y  = logl.ar1(resid.y, sigma.y, rho.y,y.meas.err) # AR(1)   
+  llik.y  = logl.ar1(resid.y, sigma.y, rho.y, y.meas.err) # AR(1)   
   
   llik = llik.y # assume residuals are independent
   llik  

@@ -18,11 +18,18 @@
 # To use this function, simply source this file:
 #   source("min_res_bootstrapped.R")
 #
+# INPUTS:
+#   vector of parameter values:
+#       p[1]: alpha; sensitivity of sea-level to temperature changes
+#       p[2]: T_0; temperature when sea-level anomaly is zero
+#       p[3]: H_0; initial sea-level anomaly
+#
 ##################################################################################
 
 min_res = function(p){
-    sum(abs(slr.boot_hind[i,] - model(p))) # returns the sum of the absolute values
-                             # from sea-level minus bootstrap simulated model values
+    # Return the sum of the absolute values
+    # from sea-level minus bootstrap simulated model values
+    sum(abs(slr.boot_hind[i,] - model(p)))
 }
 
 ################################## END ###########################################

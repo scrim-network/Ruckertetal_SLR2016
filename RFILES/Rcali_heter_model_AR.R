@@ -47,13 +47,17 @@
 #library(DEoptim)
 #library(compiler)
 #enableJIT(3)
+library(mcmc)
 
 # Set the seed
-# set.seed(1780) #seed #3
-# set.seed(1)    #seed #2
-set.seed(111)  #seed #1
-# set.seed(1014) #seed #4
-# set.seed(1234) #seed #5
+set.seed(111)
+
+## Run multiple times with different seeds to check for convergence &
+## robustness of the results:
+# set.seed(1780)
+# set.seed(1)
+# set.seed(1014)
+# set.seed(1234)
 
 # Read in the sea-level rise observations, observation errors, years, and historic and emission temps.
 source("Data/temp_sea_2300.R")
@@ -61,44 +65,48 @@ hindcast_length=122 # there are 122 years from 1880 to 2002
 projection_length=421 # from 1880 to 2300
 
 #------------------------------ Find Initial Parameter & Initial Hindcast ------------------------
-#parm = c(.34, -0.5) #cm/year per C #the sensitivity of SLR to temperature change
-#Ti=-0.5 #baseline temp (C) at which sea level is zero
-timestep=1 # timesteps are 1 year
-from=2 # start from the second year since the first year is an uncertain parameter
+# Physical model parameters
+# [1] alpha =  .34      sensitivity of SLR to temperature change (cm/year/C)
+# [2] T_0   = -0.5      baseline temp at which the sea level anomaly is zero (C)
+# [3] H_0   = -15      initial sea-level anomaly (cm)
+
+timestep = 1 # timesteps are 1 year
+from = 2 # start from the second year since the first year is an uncertain parameter, H_0
 to=hindcast_length #122
 
-#Run DEoptim in R to find good initial parameters
-source("Scripts/Deoptim_rahm_model.R") # source the model
-source("Scripts/minimize_residuals.R") # find the minimum residuals
-lower=c(0,-3,err_neg[1])
-upper=c(2,2,err_pos[1])
+# Run differential evolution optimization to find initial starting values for
+# parameters to use in optimization of the likelihood function.
+source("Scripts/Deoptim_rahm_model.R") # physical model
+source("Scripts/minimize_residuals.R") # function to minimize the residuals
+
+lower=c(0, -3, err_neg[1])
+upper=c(2,  2, err_pos[1])
 iter=1000  # specify number of iterations
 outDEoptim <- DEoptim(min_res, lower, upper, 
                       DEoptim.control(itermax=iter,
                                       trace=FALSE))
-print(outDEoptim$optim$bestmem)# find best initial parameters
-parms = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2], outDEoptim$optim$bestmem[3])
-
-#Run the model with the initial parameters to create a simulation of the observations
-source("Scripts/sealevel_rahm_model.R") #sealevel_rahm_model.R is the model equation
-slr.est = rahmfunction(parms, hist.temp)
-to=projection_length  #number of years in the projection
-proj.est = rahmfunction(parms, rcp85)
-to=hindcast_length
-
-#Check to make sure true parameters fit the observations
-#plot(year, slr/100, pch=20, ylab="Sea-level Anomaly [m]", xlab="Year")
-#lines(year, slr.est$sle/100, col="blue", lwd=2)
+print(outDEoptim$optim$bestmem) # print best initial parameters
+deoptim.parameters = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2], outDEoptim$optim$bestmem[3])
 
 #------------------------ Calculate the Residuals  & AR(1) Coefficient --------------------------
-#Calculate Residuals
-res=slr-slr.est$sle
-nyears.obs=length(year) #number of years in observational time series
+# Load the physical sea-level model converted to R from the equaitons in Rahmstorf (2007).
+source("Scripts/sealevel_rahm_model.R")
 
-### Estimate and save the lag-1 autocorrelation coefficient (rho[2])
-#pdf(file="Rheter19.pdf", family="Helvetica", pointsize=11, height=4.5, width=4.5)
+# Use the optimized parameters to generate a fit to the data.
+slr.est = rahmfunction(deoptim.parameters, hist.temp)
+
+# Plot check that model simulation fits the data.
+#plot(year, slr/100, pch=20, ylab="Sea-level anomaly [m]", xlab="Year")
+#lines(year, slr.est$sle/100, col="blue", lwd=2)
+
+# Calculate residuals from the fit to the data. Equation (S5)
+res = slr-slr.est$sle
+
+# Apply the auto-correlation function to determine a starting value for rho,
+# the correlation coefficient.
+#pdf(file="acf.pdf", family="Helvetica", pointsize=11, height=4.5, width=4.5)
 rho=rep(NA,3)
-ac=acf(res, lag.max=5, plot=TRUE, main="")# apply  auto-correlation to determine correlation coefficients
+ac=acf(res, lag.max=5, plot = FALSE, main="")
 rho[1]=ac$acf[1]
 rho[2]=ac$acf[2]
 rho[3]=ac$acf[3]
@@ -107,173 +115,200 @@ rho[5]=ac$acf[5]
 #dev.off()
 
 #--------------------------------- Run MCMC Calibration ----------------------------------------
-# Step 1: Set up the prior ranges for the MCMC
-bound.lower = c(0,-3,err_neg[1],0,-0.99)
-bound.upper = c(2,2,err_pos[1],1,0.99)
-y.meas.err=err.obs # measurement error, this changes over time making it heteroskedastic
+# Set up priors.
+bound.lower = c(0, -3, err_neg[1], 0, -0.99)
+bound.upper = c(2,  2, err_pos[1], 1,  0.99)
 
-# Step 2: Define number of model parameters
-model.p=3
-parnames=c("alpha","base temp","initialvalue", "sigma.y", "phi11")
-# Step 3: Source the physical model and statistical model
-source("Scripts/sealevel_rahm_model.R")
+# Name the model parameters and specify the number of model parameters.
+# Sigma and rho are statistical parameters and are not counted in the number.
+parnames = c("alpha","base temp","initialvalue", "sigma.y", "rho.y")
+model.p = 3
+
+# Set the measurement errors for heteroskedastic assumption.
+y.meas.err = err.obs
+
+# Load the likelihood model assuming correlated residuals.
 source("Scripts/Robs_likelihood_AR.R")
 
-# Step 4: Set up the initial parameters from the DEoptim best guess parameters
+# Optimize the likelihood function to estimate initial starting values.
 p = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2], 
       outDEoptim$optim$bestmem[3], sd(res), rho[2]) 
-p0 = c(0.34,-0.5,slr[1],0.6, 0.5) # Rahmstorf estimated best guess parameters
+p0 = c(0.34, -0.5, slr[1], 0.6, 0.5) # Rahmstorf estimated best guess parameters
 p0 = optim(p0, function(p) -log.post(p))$par
 print(round(p0,4))
-library(mcmc)
 
-# Step 5: Set up the step size, burnin, and number of iterations to run
-step = c(0.02,0.02,0.1,0.01,0.01)
-NI = 2.5e7 #number of iterations
-burnin = seq(1,0.01*NI,1) # 1% burnin
+# Set the step size and number of iterations.
+step = c(0.02, 0.02, 0.1, 0.01, 0.01)
+NI = 2.5e7
 
-#Run the MCMC chain
+# Run MCMC calibration.
 mcmc.out1 = metrop(log.post, p0, nbatch=NI, scale=step)
 prechain1 = mcmc.out1$batch
-mcmc.out1$accept
-# Calculate the parameter acceptance rate
+
+# Print the acceptance rate as a percent. Should be ~ 25%
 acceptrate = mcmc.out1$accept * 100
-#Print the acceptance rate as a percent. Should be ~ 25%
 cat("Accept rate =", acceptrate, "%\n")
 
-#-------------------------- Estimate Parameter PDFs & Best Estimates ----------------------------
-# Find the probability density function for each of the estimated parameters
-pdfa <- density(prechain1[length(burnin):NI,1])
-pdfTo <- density(prechain1[length(burnin):NI,2])
-pdfinitialval <- density(prechain1[length(burnin):NI,3])
-pdfsigma <- density(prechain1[length(burnin):NI,4])
-pdfrho <- density(prechain1[length(burnin):NI,5])
+#-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------
+# Identify the burn-in period and subtract it from the chains.
+burnin = seq(1, 0.01*NI, 1) # 1% burnin
+hetChainBurnin <- prechain1[-burnin,]
 
-hetChainBurnin <- prechain1[length(burnin):NI,]
+# Find the probability density function for each of the estimated parameters.
+heter.pdfa <- density(hetChainBurnin[ ,1])
+heter.pdfTo <- density(hetChainBurnin[ ,2])
+heter.pdfinitialval <- density(hetChainBurnin[ ,3])
+heter.pdfsigma <- density(hetChainBurnin[ ,4])
+heter.pdfrho <- density(hetChainBurnin[ ,5])
 
-# Find median estimated parameters from  with the median value
-new = c(median(prechain1[-burnin,1]), median(prechain1[-burnin,2]), median(prechain1[-burnin,3]))
-print(new)
+# Find median of the estimated parameters.
+heter.med = c(median(hetChainBurnin[ ,1]), median(hetChainBurnin[ ,2]), median(hetChainBurnin[ ,3]))
+print(heter.med)
 
+# Estimate model hindcast from parameter medians.
 to=hindcast_length #122
-new.est = rahmfunction(new, hist.temp) #best fit hindcast
+heter.med.hindcast = rahmfunction(heter.med, hist.temp)
 
-to = projection_length #421 #best fit projection
-new.proj.est = rahmfunction(new, rcp85) #~4C increase from 1990-2100
+# Estimate model projection from parameter medians.
+to = projection_length #421
+heter.med.projection = rahmfunction(heter.med, rcp85)
 
-# Estimating with all 20 million runs is not neccasary if the chains have
-# converged. So we will take a subset of every 1237th number in the data set from
-# the burnin to the 20 millionth run
-ssprechain1 = prechain1[seq(length(burnin),NI,1237),]
-h = length(ssprechain1[,1]) #length of the subset ~20,000
+# Thin the chain to a subset; ~20,000 is sufficient.
+heter_sub_chain = prechain1[seq(length(burnin), NI, 1237), ]
+heter_subset_length = length(heter_sub_chain[ ,1])
 
-## To check if subset is sufficient & for convergence: 
+## Run multiple times with different seeds to check for convergence &
+## robustness of the results:
 # save.image(file = "Workspace/heter1780.RData") # seed 3
 # save.image(file = "Workspace/heter1234.RData") # seed 5
 # save.image(file = "Workspace/heter1014.RData") # seed 4
 # save.image(file = "Workspace/heter111.RData")  # seed 1
 # save.image(file = "Workspace/heter1.RData")    # seed 2
-#They should be roughly similiar. The range needs to be the same
-#par(mfrow=c(3,2))
-#plot(density(prechain1[length(burnin):(NI/2),1]), main="alpha", xlab="")
-#lines(density(prechain1[(NI/2):NI,1]), col="blue")
-#lines(density(ssprechain1[,1]), col="red")
-#plot(density(prechain1[1:(NI/2),2]), main="base temp", xlab="")
-#lines(density(prechain1[(NI/2):NI,2]), col="blue")
-#lines(density(ssprechain1[,2]), col="red")
-#plot(density(prechain1[length(burnin):(NI/2),3]), main="initialvalue", xlab="")
-#lines(density(prechain1[(NI/2):NI,3]), col="blue")
-#lines(density(ssprechain1[,3]), col="red")
-#plot(density(prechain1[1:(NI/2),4]), main="sigma.y", xlab="")
-#lines(density(prechain1[(NI/2):NI,4]), col="blue")
-#lines(density(ssprechain1[,4]), col="red")
-#plot(density(prechain1[1:(NI/2),5]), main="phi11", xlab="")
-#lines(density(prechain1[(NI/2):NI,5]), col="blue")
-#lines(density(ssprechain1[,5]), col="red")
+
+# Check for simularities between full chain and the subset.
+par(mfrow=c(3,2))
+for(i in 1:5){
+    plot(density(hetChainBurnin[ ,i]), type="l",
+    xlab=paste('Parameter =',' ', parnames[i], sep=''), ylab="PDF", main="")
+    lines(density(heter_sub_chain[ ,i]), col="red")
+}
 
 #------------- Hindcast Sea-level Rise with Uncertainty & Find Plausible Parameters ------------------
-# Calculate all possible hindcasts from the subset parameter estimates.
-new.rate=mat.or.vec(h, nyears.obs)
-mcmc.fit=mat.or.vec(h, nyears.obs) # mcmc.fit is the hindcast SLR simulation without noise
-par=mat.or.vec(h, 2)
-source("Scripts/searate_func.R") #searate function finds the hindcast rates for SLR
-for(i in 1:h) {
-    to=hindcast_length
-    par[i,1]=ssprechain1[i,1] # alpha parameter
-    par[i,2]=ssprechain1[i,2] # T0 parameter
-    new.rate[i,] = thermal(par[i,], hist.temp)[[1]]
-    mcmc.fit[i,1] = ssprechain1[i,3]  # Initial value
+# Extract parameter vectors from the chain to enhance code readability.
+alpha.heter.chain = heter_sub_chain[ ,1]
+T_0.heter.chain = heter_sub_chain[ ,2]
+H_0.heter.chain = heter_sub_chain[ ,3]
+sigma.heter.chain = heter_sub_chain[ ,4]
+rho.heter.chain = heter_sub_chain[ ,5]
+
+# Set up empty matrices for sea level rate and sea level output.
+nyears.obs=length(year) #number of years in observational time series
+new.RATE = mat.or.vec(heter_subset_length, nyears.obs)
+mcmc.fit = mat.or.vec(heter_subset_length, nyears.obs)
+
+to=hindcast_length
+
+# Loop over the sea level model to generate a distribution of sea level rates
+# and sea level simulations.
+for(i in 1:heter_subset_length) {
+    # Estimate the sea level rate of change: equation (1)
+    new.RATE[i, ] = alpha.heter.chain[i]*(hist.temp - T_0.heter.chain[i])
+    mcmc.fit[i,1] = H_0.heter.chain[i]  # Initial value
+    
+    # Use Forward Euler to estimate sea level over time.
     for (n in from:to){
-        mcmc.fit[i,n]=mcmc.fit[i,n-1]+new.rate[i,n-1]*timestep
+        mcmc.fit[i,n] = mcmc.fit[i,n-1] + new.RATE[i,n-1]*timestep
     }
 }
 
-### Calculate hindcast residuals with the lag-1 autocorrelation coefficient estimates: ssprechain1[n,5]
-### and the standard deviation (sigma) estimates: ssprechain1[n,4]
-res.mcmc_hind=mat.or.vec(h, nyears.obs) #(nr,nc)
-slr.mcmc_hind=res.mcmc_hind
-for(n in 1:h) {
+# Estimate the residuals with the AR(1) coefficient and sigma.
+Resid_hindcast_heter = mat.or.vec(heter_subset_length, nyears.obs) #(nr,nc)
+for(n in 1:heter_subset_length) {
     for(i in 2:nyears.obs) {
-        res.mcmc_hind[n,i] = ssprechain1[n,5]*res.mcmc_hind[n,i-1] + 
-          rnorm(1,mean=0,sd=ssprechain1[n,4]) # add in the AR(1) noise
+        # Equation (S4)
+        Resid_hindcast_heter[n,i] = rho.heter.chain[n]*Resid_hindcast_heter[n,i-1] +
+          rnorm(1, mean = 0, sd = sigma.heter.chain[n])
     }
 }
-### superimpose residuals on the hindcasts from the SLR model ###
-for(i in 1:h) {
-    slr.mcmc_hind[i,]=mcmc.fit[i,]+res.mcmc_hind[i,]
+
+# Estimate the hindcasts: add the residuals onto the model simulations. Equation (2) & (S1)
+SLR.heter.hindcasts = mat.or.vec(heter_subset_length, nyears.obs) #(nr,nc)
+for(i in 1:heter_subset_length) {
+    SLR.heter.hindcasts[i,] = mcmc.fit[i,] + Resid_hindcast_heter[i,]
 }
 
 #----------------------------- Project Sea-level Rise with Uncertainty --------------------------------
-### Project SLR with uncertainty using the parameters generated from MCMC assuming heteroskedastic
-### errors and RCP8.5 temp. emission
 years.mod=(alltime) # all time represent the years from 1880 to 2300
 nyears.mod=length(years.mod)
-pred.rate=mat.or.vec(h, nyears.mod) #(nr,nc)
-fit.mcmc_proj=mat.or.vec(h, nyears.mod) #(nr,nc) # fit.mcmc_proj is SLR projections without noise
-for(n in 1:h) {
-    to=projection_length #421
-    source("Scripts/searate_func.R") #searate function finds the projected rates for SLR to 2300
-    pred.rate[n,] = thermal(par[n,], rcp85)[[1]]
-    fit.mcmc_proj[n,1] = ssprechain1[n,3] # initial value in 1880
+to=projection_length #421
+
+# Set up empty matrices for sea level rate and sea level output.
+proj.heter.RATE = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
+proj.heter.sim = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
+
+# Loop over the sea level model to generate a distribution of sea level rates
+# and sea level simulations.
+for(n in 1:heter_subset_length) {
+    # Estimate the sea level rate of change: equation (1)
+    proj.heter.RATE[n, ] = alpha.heter.chain[i]*(rcp85 - T_0.heter.chain[i])
+    proj.heter.sim[n,1] = H_0.heter.chain[n] # initial value in 1880
+    
+    # Use Forward Euler to estimate sea level over time.
     for (i in from:to){
-        fit.mcmc_proj[n,i]=fit.mcmc_proj[n,i-1]+pred.rate[n,i-1]*timestep
+        proj.heter.sim[n,i] = proj.heter.sim[n,i-1] + proj.heter.RATE[n,i-1]*timestep
     }
 }
 
-###Calculate projection residuals with the lag-1 autocorrelation coefficient estimates: ssprechain1[n,5]
-### and the standard deviation (sigma) estimates: ssprechain1[n,4]
-res.mcmc_proj=mat.or.vec(h, nyears.mod) #(nr,nc)
-slr.mcmc_proj=res.mcmc_proj
-for(n in 1:h) {
+# Estimate the residuals with the AR(1) coefficient and sigma.
+Resid_projection_heter = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
+for(n in 1:heter_subset_length) {
     for(i in 2:nyears.mod) {
-        res.mcmc_proj[n,i] = ssprechain1[n,5]*res.mcmc_proj[n,i-1] + 
-          rnorm(1,mean=0,sd=ssprechain1[n,4])
+        # Equation (S4)
+        Resid_projection_heter[n,i] = rho.heter.chain[n]*Resid_projection_heter[n,i-1] +
+          rnorm(1, mean = 0,sd = sigma.heter.chain[n])
     }
 }
-### superimpose residuals on the projections from the SLR model ###
-for(i in 1:h) {
-    slr.mcmc_proj[i,]=fit.mcmc_proj[i,]+res.mcmc_proj[i,]
+
+# Estimate the projections: add the residuals onto the model simulations. Equation (2) & (S1)
+SLR.projections.heter = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
+for(i in 1:heter_subset_length) {
+    SLR.projections.heter[i,] = proj.heter.sim[i,] + Resid_projection_heter[i,]
 }
 
 #--------------------- Estimate PDF, CDF, and SF of SLR in 2100 & 2050 --------------------------
-# Source survival function Function"
+# Load survival function Function
 source("Scripts/plot_sf.r")
 
-# Find the probability density function of sea-level estimates in 2100
-prob_proj2100=mat.or.vec(h,1)
-prob_proj2100=slr.mcmc_proj[,221] #The year 2100 is the 221 number in the sequence
-pdf2100 <- density(prob_proj2100/100)
+# Set up a vector for the sea-level anomaly distribution in 2050.
+# The year 2050 is the 171 number in the sequence.
+prob_proj2050_heter = mat.or.vec(heter_subset_length, 1)
+prob_proj2050_heter = SLR.projections.heter[ ,171]
 
-cdf2100 = ecdf(prob_proj2100/100) # Find the cumulative density function of SLR 2100
-survival2050 <- plot.sf(slr.mcmc_proj[,171]/100, make.plot=F) # Finds the survival function
+# Estimate the probability density function of sea-level anomalies in 2050.
+pdf2050_heter <- density(prob_proj2050_heter/100)
 
-# Find the probability density function of sea-level estimates in 2050
-prob_proj2050=mat.or.vec(h,1)
-prob_proj2050=slr.mcmc_proj[,171] #The year 2050 is the 171 number in the sequence
-pdf2050 <- density(prob_proj2050/100)
+# Estimate the cumulative density function.
+cdf2050_heter = ecdf(prob_proj2050_heter/100)
 
-cdf2050 = ecdf(prob_proj2050/100) # Find the cumulative density function of SLR 2050
-survival2100 <- plot.sf(slr.mcmc_proj[,221]/100, make.plot=F) # Finds the survival function
+# Estimate the survivial function.
+survival2050_heter <- plot.sf(prob_proj2050_heter/100, make.plot=F)
 
+#---
+
+# Set up a vector for the sea-level anomaly distribution in 2100.
+# The year 2100 is the 221 number in the sequence.
+prob_proj2100_heter = mat.or.vec(heter_subset_length, 1)
+prob_proj2100_heter = SLR.projections.heter[ ,221]
+
+# Estimate the probability density function of sea-level anomalies in 2100.
+pdf2100_heter <- density(prob_proj2100_heter/100)
+
+# Estimate the cumulative density function.
+cdf2100_heter = ecdf(prob_proj2100_heter/100)
+
+# Estimate the survivial function.
+survival2100_heter <- plot.sf(prob_proj2100_heter/100, make.plot=F)
+
+#### SAVE THE CURRENT WORKSPACE ####
 #save.image(file = "mega_R_methods_workspace_hetcon.RData")
 ############################################ END #############################################

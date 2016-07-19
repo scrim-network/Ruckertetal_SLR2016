@@ -26,11 +26,11 @@ load("Workspace/homo1.RData")    # seed 1
 load("Workspace/homo1780.RData") # seed 1780
 
 # mcmc is converged when the potental scale reduction factor is less than 1.1
-homo = as.mcmc(homoskchain1234)
-homo2 = as.mcmc(homoskchain111)
-homo3 = as.mcmc(homoskchain1014)
-homo4 = as.mcmc(homoskchainone)
-homo5 = as.mcmc(homoskchain1780)
+homo = as.mcmc(homoskchain1234[-burnin,])
+homo2 = as.mcmc(homoskchain111[-burnin,])
+homo3 = as.mcmc(homoskchain1014[-burnin,])
+homo4 = as.mcmc(homoskchainone[-burnin,])
+homo5 = as.mcmc(homoskchain1780[-burnin,])
 
 homolist = mcmc.list(list(homo, homo2, homo3, homo4, homo5))
 gelman.diag(homolist)
@@ -48,11 +48,11 @@ load("Workspace/heter111.RData")  # seed 111
 load("Workspace/heter1.RData")    # seed 1
 
 # mcmc is converged when the potental scale reduction factor is less than 1.1
-heter = as.mcmc(prechain1014)
-heter2 = as.mcmc(prechain111)
-heter3 = as.mcmc(prechain1780)
-heter4 = as.mcmc(prechain1234)
-heter5 = as.mcmc(prechainone)
+heter = as.mcmc(prechain1014[-burnin,])
+heter2 = as.mcmc(prechain111[-burnin,])
+heter3 = as.mcmc(prechain1780[-burnin,])
+heter4 = as.mcmc(prechain1234[-burnin,])
+heter5 = as.mcmc(prechainone[-burnin,])
 
 heterlist = mcmc.list(list(heter, heter2, heter3, heter4, heter5))
 gelman.diag(heterlist)

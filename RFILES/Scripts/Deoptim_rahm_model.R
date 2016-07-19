@@ -17,20 +17,30 @@
 # To use this function, simply source this file:
 #   source("DEoptim_rahm_model.R")
 #
+# INPUTS:
+#   vector of parameter values:
+#       p[1]: alpha; sensitivity of sea-level to temperature changes
+#       p[2]: T_0; temperature when sea-level anomaly is zero
+#       p[3]: H_0; initial sea-level anomaly
+#
 ###################################################################################
 
-model = function(p){ # p represents the parameters in a vector
-  dH=p[1]*(hist.temp-p[2]) # dH represent the rate of the sea-level rise
-  #p[1] = sensitivity of sea-level to temperature changes
-  #p[2] = temperature when sea-level is zero
-  
-  # sea-level values
-  H_1 = rep(NA, to)
-  H_1[1]=p[3] # sea-level in 1880
-  for (i in from:to){
-    H_1[i]=H_1[i-1]+dH[i-1]*timestep
-  }
-  return(H_1)
+model = function(p){
+    
+    # Estimate the rate, dH, of sea-level change each year, Equation (1)
+    dH = p[1]*(hist.temp - p[2])
+
+    # Set up empty vector for sea level anomalies.
+    H = rep(NA, to)
+    H[1] = p[3]
+    
+    # Run a forward euler to estimate sea-level over time
+    for (i in from:to){
+        H[i] = H[i-1] + dH[i-1]*timestep
+    }
+    
+    # Return sea-level anomalies
+    return(H)
 }
 
 #################################### END ##########################################
