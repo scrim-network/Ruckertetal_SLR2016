@@ -6,7 +6,7 @@ README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Thu May 26 12
 
 This code is intended to accompany the results of
 
->Ruckert, KL, Guan, Y, Forest, FE, and Keller, K. Improving the statistical method can raise the upper tail of sea-level projections, (in review).
+>Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K. The effects of time-varying observation errors on probabilistic sea-level projections, (in review).
 
 Please cite that paper and the Rahmstorf (2007) study when using any results generated with this code.
 
