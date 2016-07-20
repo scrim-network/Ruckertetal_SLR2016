@@ -21,7 +21,7 @@
  ===================================================================
 
 Required software:
-    R
+    R (used R 3.2.1)
 
 Required libraries:
     mcmc
