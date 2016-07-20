@@ -86,21 +86,40 @@ boot_1in30[171] ; boot_1in30[221]
 boot_1in100[171] ; boot_1in100[221]
 boot_1in1000[171] ; boot_1in1000[221]
 
-# Print the percent increase: in 2050
-# 1/30 (3.3%)
-(het_1in30[171] - boot_1in30[171])/ boot_1in30[171])
-# 1/100 (1%)
-(het_1in100[171] - boot_1in100[171])/ boot_1in100[171])
-# 1/1,000 (0.1%)
-(het_1in1000[171] - boot_1in1000[171])/ boot_1in1000[171])
+paste("Print the sea-level anomaly with 1% probability in the year 2050 and 2100:")
+paste("Bayesian (heteroskedastic) sea-level anomaly with 1% probability in 2050: ", round(het_1in100[171],2), " & 2100: ", round(het_1in100[221],2), " m", sep="")
+paste("Bayesian (homoskedastic) sea-level anomaly with 1% probability in 2050: ", round(hom_1in100[171],2), " & 2100: ", round(hom_1in100[221],2), " m", sep="")
+paste("Bootstrap sea-level anomaly with 1% probability in 2050: ", round(boot_1in100[171],2), " & 2100: ", round(boot_1in100[221],2), " m", sep="")
 
-# Print the percent increase: in 2100
-# 1/30 (3.3%)
-(het_1in30[221] - boot_1in30[221])/ boot_1in30[221])
-# 1/100 (1%)
-(het_1in100[221] - boot_1in100[221])/ boot_1in100[221])
-# 1/1,000 (0.1%)
-(het_1in1000[221] - boot_1in1000[221])/ boot_1in1000[221])
+# Print the percent increase: in 2050:
+paste("Print the percent increase: in 2050:")
+paste("1/30 (3.3%):")
+(het_1in30[171] - boot_1in30[171])/ boot_1in30[171]
+paste("1/100 (1%):")
+(het_1in100[171] - boot_1in100[171])/ boot_1in100[171]
+paste("1/1,000 (0.1%):")
+(het_1in1000[171] - boot_1in1000[171])/ boot_1in1000[171]
+
+# Print the percent increase: in 2100:
+paste("Print the percent increase: in 2100:")
+paste("1/30 (3.3%):")
+(het_1in30[221] - boot_1in30[221])/ boot_1in30[221]
+paste("1/100 (1%):")
+(het_1in100[221] - boot_1in100[221])/ boot_1in100[221]
+paste("1/1,000 (0.1%):")
+(het_1in1000[221] - boot_1in1000[221])/ boot_1in1000[221]
+
+# Print the 90% credible interval range in 2050:
+paste("Print the 90% credible interval range in 2050:")
+paste("Bayesian (heteroskedastic): ", round(het_5[171],2), "-", round(het_95[171],2), " m", sep="")
+paste("Bayesian (homoskedastic): ", round(hom_5[171],2), "-", round(hom_95[171],2), " m", sep="")
+paste("Bootstrap: ", round(boot_5[171],2), "-", round(boot_95[171],2), " m", sep="")
+
+# Print the 90% credible interval range in 2100:
+paste("Print the 90% credible interval range in 2100:")
+paste("Bayesian (heteroskedastic): ", round(het_5[221],2), "-", round(het_95[221],2), " m", sep="")
+paste("Bayesian (homoskedastic): ", round(hom_5[221],2), "-", round(hom_95[221],2), " m", sep="")
+paste("Bootstrap: ", round(boot_5[221],2), "-", round(boot_95[221],2), " m", sep="")
 
 # Set plotting dimensions
 mm_TO_inches = function(mm){
@@ -272,7 +291,7 @@ lines(c(-12.4,-12.4),c(0,.25), lwd=3, lty=2)
 lines(c(-16.9,-12.4),c(.25,.25), lwd=3, lty=2)
 put.fig.letter("c.",font=2)
 
-plot(homo.pdfsigma, lwd=3, col=test.colors[2], main="",xlab=expression(paste(rho, " (lag-1 autoregression coefficient)")),
+plot(homo.pdfrho, lwd=3, col=test.colors[2], main="",xlab=expression(paste(rho, " (lag-1 autoregression coefficient)")),
 ylab="Probability Density", xlim=c(-0.99, 0.99), yaxt="n")
 abline(v=rho[2], lwd=3, col=test.colors[1])
 lines(heter.pdfrho, lwd=3, col=test.colors[3])
@@ -341,7 +360,7 @@ plot(survival2100_heter$sf.num, survival2100_heter$sf, log="y", type="l", xlim=c
 col=test.colors[3], ylab="", lwd=3,
 xlab="Projected sea-level 2100 [m]",main="",ylim=c(1e-04,1), yaxt="n")
 lines(survival2100_boot$sf.num, survival2100_boot$sf, lwd=3, col=test.colors[1])
-lines(survival2050_homo$sf.num, survival2050_homo$sf, lwd=3, col=test.colors[2])
+lines(survival2100_homo$sf.num, survival2100_homo$sf, lwd=3, col=test.colors[2])
 abline(h=1/100, lty=2)
 axis(2, at=10^(-4:0), label=parse(text=paste("10^", -4:0, sep="")))
 put.fig.letter("f.",font=2)
@@ -381,8 +400,8 @@ width = 0.25  # Width of bars
 #low_5_dist = c(0.68, 0.50, 0.32, 0.52,0.55, 1.125, 0.9)
 #high_95_dist = c(0.98, 0.96, 1.07,1.31,1.21,1.375, 1.65)
 
-low_5_dist =   c(round(boot_5,2),  round(hom_5,2),  round(het_5,2),  0.52, 0.55, 1.125, 0.9)
-high_95_dist = c(round(boot_95,2), round(hom_95,2), round(het_95,2), 1.31, 1.21, 1.375, 1.65)
+low_5_dist =   c(round(boot_5[221],2),  round(hom_5[221],2),  round(het_5[221],2),  0.52, 0.55, 1.125, 0.9)
+high_95_dist = c(round(boot_95[221],2), round(hom_95[221],2), round(het_95[221],2), 1.31, 1.21, 1.375, 1.65)
 
 studies.colors <- c(test.colors[1:3], "black", "black", "black", "black", "black", "black")
 
