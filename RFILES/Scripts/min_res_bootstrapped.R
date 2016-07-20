@@ -29,7 +29,7 @@
 min_res = function(p){
     # Return the sum of the absolute values
     # from sea-level minus bootstrap simulated model values
-    sum(abs(slr.boot_hind[i,] - model(p)))
+    sum(abs(slr.boot.sim[i,] - model(p)))
 }
 
 ################################## END ###########################################

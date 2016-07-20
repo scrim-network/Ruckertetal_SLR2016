@@ -212,7 +212,7 @@ for(n in 1:NI.boot) {
 
 # Estimate the hindcasts: add the residuals onto the model simulations. Equation (2) & (S1)
 SLR.boot.hindcasts = mat.or.vec(NI.boot, nyears.obs) #(nr,nc)
-for(i in 1:N) {
+for(i in 1:NI.boot) {
     SLR.boot.hindcasts[i,] = boot.fit[i,] + boostrapped_RES_hind[i,]
 }
 
