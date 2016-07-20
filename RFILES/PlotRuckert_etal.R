@@ -388,6 +388,7 @@ axis(side=4, labels=FALSE)
 legend("topleft", c("Bootstrap median fit","Bayesian (homoskedastic) median fit","Bayesian (heteroskedastic) median fit",
 "Observation error", "Observations"),bty="n", lwd=2, pch=c(NA,NA,NA,NA,20), cex=0.8,
 lty=c(1,1,1,1,NA), col=c(test.colors[1:3],"seashell4","black"))
+dev.off()
 
 #---------------------------------- Supplementary Figure 2 ----------------------------------------------
 # sup2: Comparison of SLR projections

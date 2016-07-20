@@ -46,7 +46,7 @@ temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
 respect_20th = mean(temp_C[42:141]) #1901 - 2000
 tempRCP26_anom = temp_C - respect_20th
-tempRCP26_anom = c(data[1:134,2], tempRCP26_anom[155:241])
+tempRCP26_anom = c(temp.data[1:134,2], tempRCP26_anom[155:241])
 
 # RCP 4.5 -----------------------------------------------------------------
 # fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp45.r1i1p1.18600101-22991230.nc")
@@ -67,7 +67,7 @@ temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
 respect_20th = mean(temp_C[42:141]) #1901 - 2000
 tempRCP45_anom = temp_C - respect_20th
-tempRCP45_anom = c(data[1:134,2], tempRCP45_anom[155:241])
+tempRCP45_anom = c(temp.data[1:134,2], tempRCP45_anom[155:241])
 
 # RCP 6.0 -----------------------------------------------------------------
 # fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp60.r1i1p1.18600101-20991230.nc")
@@ -88,7 +88,7 @@ temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
 respect_20th = mean(temp_C[42:141])
 tempRCP60_anom = temp_C - respect_20th
-tempRCP60_anom = c(data[1:134,2], tempRCP60_anom[155:241])
+tempRCP60_anom = c(temp.data[1:134,2], tempRCP60_anom[155:241])
 
 # RCP 8.5 -----------------------------------------------------------------
 # fid1<-open.ncdf("Data/global.tas.aann.HadGEM2-ES.historical+rcp85.r1i1p1.18600101-22991230.nc")
@@ -109,7 +109,7 @@ temp_C = temp_K - 273.15
 # Calculate anomaly with respect to 20th century mean
 respect_20th = mean(temp_C[42:141])
 tempRCP85_anom = temp_C - respect_20th
-tempRCP85_anom = c(data[1:134,2], tempRCP85_anom[155:241])
+tempRCP85_anom = c(temp.data[1:134,2], tempRCP85_anom[155:241])
 
 remove(year_nc, temp_C, temp_K, respect_20th, fid1)
 
