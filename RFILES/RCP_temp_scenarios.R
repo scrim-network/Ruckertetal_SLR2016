@@ -351,7 +351,7 @@ for(n in 1:homo_subset_length) {
 }
 
 # Estimate the residuals with the AR(1) coefficient and sigma.
-res.homo_85=mat.or.vec(k, length(years.rcp)) #(nr,nc)
+res.homo_85=mat.or.vec(homo_subset_length, length(years.rcp)) #(nr,nc)
 homo.slr.rcp85=res.homo_85
 for(n in 1:homo_subset_length) {
   for(i in 2:length(years.rcp)) {
