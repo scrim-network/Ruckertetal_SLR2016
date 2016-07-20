@@ -251,7 +251,7 @@ for(n in 1:NI.boot) {
 # Estimate the hindcasts: add the residuals onto the model simulations. Equation (2) & (S1)
 SLR.projections.boot = mat.or.vec(NI.boot, nyears.mod) #(nr,nc)
 for(i in 1:NI.boot) {
-  SLR.projections.boot[i,] = SLR.projections.boot[i,] + Resid_projection_boot[i,]
+  SLR.projections.boot[i,] = proj.boot.sim[i,] + Resid_projection_boot[i,]
 }
 
 #-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------

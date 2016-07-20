@@ -250,8 +250,8 @@ proj.homo.sim = mat.or.vec(homo_subset_length, nyears.mod) #(nr,nc)
 # and sea level simulations.
 for(n in 1:homo_subset_length) {
     # Estimate the sea level rate of change: equation (1)
-    proj.homo.RATE[i,] = alpha.homo.chain[n]*(rcp85 - T_0.homo.chain[n])
-    proj.homo.sim[i,1] = H_0.homo.chain[n]  # Initial value
+    proj.homo.RATE[n,] = alpha.homo.chain[n]*(rcp85 - T_0.homo.chain[n])
+    proj.homo.sim[n,1] = H_0.homo.chain[n]  # Initial value
     
     # Use Forward Euler to estimate sea level over time.
     for (i in from:to){

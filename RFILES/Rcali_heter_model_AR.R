@@ -250,7 +250,7 @@ proj.heter.sim = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
 # and sea level simulations.
 for(n in 1:heter_subset_length) {
     # Estimate the sea level rate of change: equation (1)
-    proj.heter.RATE[n, ] = alpha.heter.chain[i]*(rcp85 - T_0.heter.chain[i])
+    proj.heter.RATE[n, ] = alpha.heter.chain[n]*(rcp85 - T_0.heter.chain[n])
     proj.heter.sim[n,1] = H_0.heter.chain[n] # initial value in 1880
     
     # Use Forward Euler to estimate sea level over time.
