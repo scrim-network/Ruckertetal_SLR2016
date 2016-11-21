@@ -1,10 +1,10 @@
 #################################################################################
 #
-#  -file = "Rcali_homo_model_AR.R"   Code written August 2014
+#  -file = "cali_homo_model_AR_Rahm.R"   Code written August 2014
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program runs a Markov Chain Monte Carlo analysis of global sea-level
-#       assuming homoskedastic errors as described in Ruckert et al. (2016).
+#       assuming homoskedastic errors as described in Ruckert et al. (accepted).
 #       For further description and references, please read the paper.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
@@ -211,7 +211,7 @@ to = hindcast_length
 # Loop over the sea level model to generate a distribution of sea level rates
 # and sea level simulations.
 for(i in 1:homo_subset_length) {
-    # Estimate the sea level rate of change: equation (1)
+    # Estimate the sea level rate of change: equation (S17)
     homo.new.RATE[i,] = alpha.homo.chain[i]*(hist.temp - T_0.homo.chain[i])
     homo.mcmc.fit[i,1] = H_0.homo.chain[i]  # Initial value
     
@@ -225,7 +225,7 @@ for(i in 1:homo_subset_length) {
 Resid_hindcast_homo = mat.or.vec(homo_subset_length, nyears.obs) #(nr,nc)
 for(n in 1:homo_subset_length) {
   for(i in 2:nyears.obs) {
-      # Equation (S4)
+      # Equation (4-5 & S3-S4)
       Resid_hindcast_homo[n,i] = rho.homo.chain[n]*Resid_hindcast_homo[n,i-1] +
       rnorm(1, mean = 0, sd = sigma.homo.chain[n]) # add in the AR(1) noise
   }
@@ -249,7 +249,7 @@ proj.homo.sim = mat.or.vec(homo_subset_length, nyears.mod) #(nr,nc)
 # Loop over the sea level model to generate a distribution of sea level rates
 # and sea level simulations.
 for(n in 1:homo_subset_length) {
-    # Estimate the sea level rate of change: equation (1)
+    # Estimate the sea level rate of change: equation (S17)
     proj.homo.RATE[n,] = alpha.homo.chain[n]*(rcp85 - T_0.homo.chain[n])
     proj.homo.sim[n,1] = H_0.homo.chain[n]  # Initial value
     
@@ -263,7 +263,7 @@ for(n in 1:homo_subset_length) {
 Resid_projection_homo = mat.or.vec(homo_subset_length, nyears.mod) #(nr,nc)
 for(n in 1:homo_subset_length) {
   for(i in 2:nyears.mod) {
-      # Equation (S4)
+      # Equation (4-5 & S3-S4)
       Resid_projection_homo[n,i] = rho.homo.chain[n]*Resid_projection_homo[n,i-1] +
       rnorm(1, mean = 0,sd = sigma.homo.chain[n])
   }
