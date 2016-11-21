@@ -42,7 +42,7 @@ enableJIT(3)
 # set.seed(1234)
 # set.seed(111)
 
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 #----------------------- Test #1: Length of Observations ----------------------------#
 #load("Workspace/testiidall.RData") #Load results from test #1 and test 2a
 
@@ -340,7 +340,7 @@ circlesize = seq(from=1, to=4, length.out=7)
 
 setEPS()
 # postscript(file="SuppFigures/sfigure7a_7d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=5.4, pointsize=11)
-postscript(file="SuppFigures/sFig7a_7d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", 
+postscript(file="../SuppFigures/sFig7a_7d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", 
            width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 
