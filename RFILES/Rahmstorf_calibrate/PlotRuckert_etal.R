@@ -4,7 +4,7 @@
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program loads in the workspace generated from the file Mega_Rahmstorf.R
-#       and produces the graphs shown in Ruckert et al. (2016). It also produces
+#       and produces the graphs shown in Ruckert et al. (accepted). It also produces
 #       the graphs shown in that paper. For further description and references,
 #       please read the paper.
 #
@@ -21,7 +21,7 @@
 
 load("Workspace/mega_R_methods_workspace.RData") # Load in the saved workspace from file Mega_Rahmstorf.R
 
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 ######################################## MAIN FIGURES #############################################
 
 # Calculate the 90% confidence interval for each method and upper tail estimates
@@ -86,40 +86,40 @@ boot_1in30[171] ; boot_1in30[221]
 boot_1in100[171] ; boot_1in100[221]
 boot_1in1000[171] ; boot_1in1000[221]
 
-paste("Print the sea-level anomaly with 1% probability in the year 2050 and 2100:")
-paste("Bayesian (heteroskedastic) sea-level anomaly with 1% probability in 2050: ", round(het_1in100[171],2), " & 2100: ", round(het_1in100[221],2), " m", sep="")
-paste("Bayesian (homoskedastic) sea-level anomaly with 1% probability in 2050: ", round(hom_1in100[171],2), " & 2100: ", round(hom_1in100[221],2), " m", sep="")
-paste("Bootstrap sea-level anomaly with 1% probability in 2050: ", round(boot_1in100[171],2), " & 2100: ", round(boot_1in100[221],2), " m", sep="")
+print(paste("Print the sea-level anomaly with 1% probability in the year 2050 and 2100:"))
+print(paste("Bayesian (heteroskedastic) sea-level anomaly with 1% probability in 2050: ", round(het_1in100[171],2), " & 2100: ", round(het_1in100[221],2), " m", sep=""))
+print(paste("Bayesian (homoskedastic) sea-level anomaly with 1% probability in 2050: ", round(hom_1in100[171],2), " & 2100: ", round(hom_1in100[221],2), " m", sep=""))
+print(paste("Bootstrap sea-level anomaly with 1% probability in 2050: ", round(boot_1in100[171],2), " & 2100: ", round(boot_1in100[221],2), " m", sep=""))
 
 # Print the percent increase: in 2050:
-paste("Print the percent increase: in 2050:")
-paste("1/30 (3.3%):")
-(het_1in30[171] - boot_1in30[171])/ boot_1in30[171]
-paste("1/100 (1%):")
-(het_1in100[171] - boot_1in100[171])/ boot_1in100[171]
-paste("1/1,000 (0.1%):")
-(het_1in1000[171] - boot_1in1000[171])/ boot_1in1000[171]
+print(paste("Print the percent increase: in 2050:"))
+print(paste("1/30 (3.3%):"))
+print((het_1in30[171] - boot_1in30[171])/ boot_1in30[171])
+print(paste("1/100 (1%):"))
+print((het_1in100[171] - boot_1in100[171])/ boot_1in100[171])
+print(paste("1/1,000 (0.1%):"))
+print((het_1in1000[171] - boot_1in1000[171])/ boot_1in1000[171])
 
 # Print the percent increase: in 2100:
-paste("Print the percent increase: in 2100:")
-paste("1/30 (3.3%):")
-(het_1in30[221] - boot_1in30[221])/ boot_1in30[221]
-paste("1/100 (1%):")
-(het_1in100[221] - boot_1in100[221])/ boot_1in100[221]
-paste("1/1,000 (0.1%):")
-(het_1in1000[221] - boot_1in1000[221])/ boot_1in1000[221]
+print(paste("Print the percent increase: in 2100:"))
+print(paste("1/30 (3.3%):"))
+print((het_1in30[221] - boot_1in30[221])/ boot_1in30[221])
+print(paste("1/100 (1%):"))
+print((het_1in100[221] - boot_1in100[221])/ boot_1in100[221])
+print(paste("1/1,000 (0.1%):"))
+print((het_1in1000[221] - boot_1in1000[221])/ boot_1in1000[221])
 
 # Print the 90% credible interval range in 2050:
-paste("Print the 90% credible interval range in 2050:")
-paste("Bayesian (heteroskedastic): ", round(het_5[171],2), "-", round(het_95[171],2), " m", sep="")
-paste("Bayesian (homoskedastic): ", round(hom_5[171],2), "-", round(hom_95[171],2), " m", sep="")
-paste("Bootstrap: ", round(boot_5[171],2), "-", round(boot_95[171],2), " m", sep="")
+print(paste("Print the 90% credible interval range in 2050:"))
+print(paste("Bayesian (heteroskedastic): ", round(het_5[171],2), "-", round(het_95[171],2), " m", sep=""))
+print(paste("Bayesian (homoskedastic): ", round(hom_5[171],2), "-", round(hom_95[171],2), " m", sep=""))
+print(paste("Bootstrap: ", round(boot_5[171],2), "-", round(boot_95[171],2), " m", sep=""))
 
 # Print the 90% credible interval range in 2100:
-paste("Print the 90% credible interval range in 2100:")
-paste("Bayesian (heteroskedastic): ", round(het_5[221],2), "-", round(het_95[221],2), " m", sep="")
-paste("Bayesian (homoskedastic): ", round(hom_5[221],2), "-", round(hom_95[221],2), " m", sep="")
-paste("Bootstrap: ", round(boot_5[221],2), "-", round(boot_95[221],2), " m", sep="")
+print(paste("Print the 90% credible interval range in 2100:"))
+print(paste("Bayesian (heteroskedastic): ", round(het_5[221],2), "-", round(het_95[221],2), " m", sep=""))
+print(paste("Bayesian (homoskedastic): ", round(hom_5[221],2), "-", round(hom_95[221],2), " m", sep=""))
+print(paste("Bootstrap: ", round(boot_5[221],2), "-", round(boot_95[221],2), " m", sep=""))
 
 # Set plotting dimensions
 mm_TO_inches = function(mm){
@@ -146,15 +146,14 @@ boot_x_90=c(boot_5, rev(boot_95)); boot_y_90=c(years.mod, rev(years.mod))
 
 setEPS()
 # postscript(file="SuppFigures/sfigure2a_2b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="Figures/Fig1.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig1_rahmstorf..eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*2, pointsize=11)
 
 layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
 par(mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
 # Residuals (a)
-plot(year, res*10, type="l", xlab="Year", ylab="Sea-level residuals [mm]
-(observations - best fit)")
+plot(year, res*10, type="l", xlab="Year", ylab="Sea-level residuals [mm]\n(observations - best fit)")
 points(year, res*10, pch=20)
 abline(h=0, lty=3, lwd=2)
 put.fig.letter("a.",font=2)
@@ -177,7 +176,7 @@ dev.off()
 #    90% credible interval projections to 2100 (c)
 #
 # Load in previously calculated surprise index information
-surprise = read.csv("Data/rahm_surprise.csv")
+surprise = read.csv("../Data/rahm_surprise.csv")
 percent = surprise[1:16,1]
 boots = surprise[1:16,3]
 homos = surprise[1:16,5]
@@ -188,7 +187,7 @@ heter_deviation = surprise[1:16,11]
 
 setEPS()
 # postscript(file="Figures/figure1a_1b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="Figures/Fig2.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig2_rahmstorf.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
@@ -203,7 +202,7 @@ arrows(year, err_pos/100, year, err_neg/100, length=0)  # add in the observation
 axis(side=4, labels=FALSE)
 put.fig.letter("a.",font=2)
 
-legend("topleft", c('Bootstrap','Bayesian (homoskedastic)','Bayesian (heteroskedastic)', "Perfect reliability", "Observations"), cex=0.85,
+legend("topleft", c('Bootstrap','Homoskedastic Bayesian','Heteroskedastic Bayesian', "Perfect reliability", "Observations"), cex=0.85,
 pch=c(15,15,15,NA,20), lty=c(NA,NA,NA,2,NA), bty="n", col=c(test.colors[1:3],"black","black"))
 legend("topleft", c('','', "","","", "Observation error"),
 pch=c(NA,NA,NA,NA,NA,"l"), bty="n", col="black", cex=0.85)
@@ -251,7 +250,7 @@ dev.off()
 
 setEPS()
 # postscript(file="Figures/figure3a_3c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
-postscript(file="Figures/Fig3.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig3_rahmstorf.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
@@ -266,10 +265,9 @@ lines(c(2,2),c(0,1), lwd=3, lty=2)
 lines(c(0,2),c(1,1), lwd=3, lty=2)
 put.fig.letter("a.",font=2)
 
-legend("topright", c("Bootstap","Bayesian
-(homoskedastic)","Bayesian
-(heteroskedastic)", "Prior"), bty="n", lty=c(1,1,1,2), lwd=2, y.intersp=1.5, cex=0.9,
-pt.cex=0.9, col=c(test.colors[1:3],"black"))
+legend("topright", c("Bootstap","Homoskedastic\nBayesian","Heteroskedastic\nBayesian", "Prior"), 
+       bty="n", lty=c(1,1,1,2), lwd=2, cex=0.9,
+       pt.cex=0.9, col=c(test.colors[1:3],"black"))
 
 #Base Temperature (T0)
 plot(boot.pdfTo, lwd=3, col=test.colors[1], main="",xlab=expression(paste(T[0], " [",degree,"C] (equilibrium temperature)")),
@@ -307,46 +305,44 @@ dev.off()
 
 setEPS()
 # postscript(file="Figures/figure4a_4c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
-postscript(file="Figures/Fig4.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig4_rahmstorf.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*3, pointsize=13)
 par(mfrow=c(3,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
 # probability density function for SLR values in 2050
 plot(pdf2050_boot, main="", col=test.colors[1], lwd=3, ylab="Probabilty density",
-xlab="", xlim=c(-0.1,0.8), yaxt="n")
+xlab="Projected sea level 2050 [m]", xlim=c(-0.1,0.8), yaxt="n")
 lines(pdf2050_homo, lwd=3, col=test.colors[2])
 lines(pdf2050_heter, lwd=3, col=test.colors[3])
 put.fig.letter("a.",font=2)
-legend("topright", c("Bootstap","Bayesian
-(homoskedastic)","Bayesian
-(heteroskedastic)"), bty="n", lty=c(1,1,1), lwd=2, y.intersp=1.5, cex=0.9,
+legend("topright", c("Bootstap","Homoskedastic\nBayesian",
+"Heteroskedastic\nBayesian"), bty="n", lty=1, lwd=2, cex=0.9,
 pt.cex=0.9, col=test.colors[1:3])
 
 # Probability desity function for 2100
-plot(pdf2100_boot, main="",lwd=3, col=test.colors[1], xlab="",
-ylab="", xlim=c(0,2.5), yaxt="n")
+plot(pdf2100_boot, main="",lwd=3, col=test.colors[1], xlab="Projected sea level 2100 [m]",
+ylab="Probabilty density", xlim=c(0,2.5), yaxt="n")
 lines(pdf2100_homo, col=test.colors[2], lwd=3)
 lines(pdf2100_heter, col=test.colors[3], lwd=3)
 put.fig.letter("b.",font=2)
 
 # cumulative density function for SLR values in 2050
 plot(cdf2050_heter, lwd=3, ylab="Cumulative density", col=test.colors[3],
-xlab="", main="", xlim=c(-0.1,0.8))
+xlab="Projected sea level 2050 [m]", main="", xlim=c(-0.1,0.8))
 lines(cdf2050_boot, lwd=3, col=test.colors[1])
 lines(cdf2050_homo, lwd=3, col=test.colors[2])
 put.fig.letter("c.",font=2)
 
 # Cumulative desity function for 2100
-plot(cdf2100_heter, col=test.colors[3], ylab="", main="",
-xlab="", lwd=3, xlim=c(0,2.5))
+plot(cdf2100_heter, col=test.colors[3], ylab="Cumulative density", main="",
+xlab="Projected sea level 2100 [m]", lwd=3, xlim=c(0,2.5))
 lines(cdf2100_boot, col=test.colors[1], lwd=3)
 lines(cdf2100_homo, col=test.colors[2], lwd=3)
 put.fig.letter("d.",font=2)
 
 # survival function for SLR values in 2050
 plot(survival2050_heter$sf.num, survival2050_heter$sf, log="y", type="l", xlim=c(-0.1,0.8),
-col=test.colors[3], ylab="Survival function
-[1-cumulative probability]", lwd=3,
+col=test.colors[3], ylab="Survival function\n[1-cumulative probability]", lwd=3,
 xlab="Projected sea-level 2050 [m]",main="",ylim=c(1e-04,1), yaxt="n")
 lines(survival2050_boot$sf.num, survival2050_boot$sf, lwd=3, col=test.colors[1])
 lines(survival2050_homo$sf.num, survival2050_homo$sf, lwd=3, col=test.colors[2])
@@ -357,7 +353,7 @@ put.fig.letter("e.",font=2)
 
 # Survival function for 2100
 plot(survival2100_heter$sf.num, survival2100_heter$sf, log="y", type="l", xlim=c(0,2.5),
-col=test.colors[3], ylab="", lwd=3,
+col=test.colors[3], ylab="Survival function\n[1-cumulative probability]", lwd=3,
 xlab="Projected sea-level 2100 [m]",main="",ylim=c(1e-04,1), yaxt="n")
 lines(survival2100_boot$sf.num, survival2100_boot$sf, lwd=3, col=test.colors[1])
 lines(survival2100_homo$sf.num, survival2100_homo$sf, lwd=3, col=test.colors[2])
@@ -373,7 +369,7 @@ dev.off()
 
 setEPS()
 # postscript(file="SuppFigures/sfigure1a_1b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="SuppFigures/SFig1.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/SFig1_rahmstorf.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=single_column, height=column_height, pointsize=9)
 par(mfrow=c(1,1), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
@@ -385,34 +381,34 @@ lines(year, heter.med.hindcast$sle/100, col=test.colors[3], lwd=2)
 lines(year, homo.med.hindcast$sle/100, col=test.colors[2], lwd=2)
 axis(side=4, labels=FALSE)
 
-legend("topleft", c("Bootstrap median fit","Bayesian (homoskedastic) median fit","Bayesian (heteroskedastic) median fit",
+legend("topleft", c("Bootstrap median fit","Homoskedastic Bayesian median fit","Heteroskedastic Bayesian median fit",
 "Observation error", "Observations"),bty="n", lwd=2, pch=c(NA,NA,NA,NA,20), cex=0.8,
 lty=c(1,1,1,1,NA), col=c(test.colors[1:3],"seashell4","black"))
 dev.off()
 
 #---------------------------------- Supplementary Figure 2 ----------------------------------------------
 # sup2: Comparison of SLR projections
-studies.num = 1:7
+studies.num = 1:8
 width = 0.25  # Width of bars
 
-# Method A, Method B, Method C,  Kopp 2016, Kopp et al 2014, # Rahmstorf 2012 (default with CW06),
+# Bootstrap, Homoskedastic, Heteroskedastic,  Kopp 2016, Kopp et al 2014, # Rahmstorf 2012 (default with CW06), Grinsted et al. 2010,
 # VR09 with JE08 #0.98 to 1.55 was the +/- 1 standard deviation for VR
 
 #low_5_dist = c(0.68, 0.50, 0.32, 0.52,0.55, 1.125, 0.9)
 #high_95_dist = c(0.98, 0.96, 1.07,1.31,1.21,1.375, 1.65)
 
-low_5_dist =   c(round(boot_5[221],2),  round(hom_5[221],2),  round(het_5[221],2),  0.52, 0.55, 1.125, 0.9)
-high_95_dist = c(round(boot_95[221],2), round(hom_95[221],2), round(het_95[221],2), 1.31, 1.21, 1.375, 1.65)
+low_5_dist =   c(round(boot_5[221],2),  round(hom_5[221],2),  round(het_5[221],2), 0.52, 0.55, 1.125, 0.32, 0.9)
+high_95_dist = c(round(boot_95[221],2), round(hom_95[221],2), round(het_95[221],2), 1.31, 1.21, 1.375, 1.37, 1.65)
 
-studies.colors <- c(test.colors[1:3], "black", "black", "black", "black", "black", "black")
+studies.colors <- c(test.colors[1:3], "black", "black", "black", "black", "black", "black", "black")
 
 setEPS()
 # postscript(file="SuppFigures/sfigure5.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=2.7, pointsize=9)
-postscript(file="SuppFigures/SFig2.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/SFig2_rahmstorf..eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=single_column, height=column_height, pointsize=9)
 par(mfrow=c(1,1), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 
-plot(c(0.5,7), c(0,2), pch = 20, col = "white",
+plot(c(0.5,8), c(0,2), pch = 20, col = "white",
 xaxt="n", ylab="Sea-level anomaly in 2100 [m]", xlab="")
 
 for(i in 1:length(studies.num)) {
@@ -423,7 +419,7 @@ for(i in 1:length(studies.num)) {
 }
 
 ticks = studies.num
-axis(side=1, at=ticks, labels=expression("Boot.","Hom.","Het.","K16","K14", "R12", "VR09"))
+axis(side=1, at=ticks, labels=expression("Boot.","Hom.","Het.","K16","K14", "R12", "G10", "VR09"))
 
 dev.off()
 
