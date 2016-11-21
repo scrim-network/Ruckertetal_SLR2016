@@ -55,7 +55,7 @@ set.seed(111)
 # set.seed(1234)
 
 # Read in the sea-level rise observations, observation errors, years, and historic and emission temps.
-source("Data/temp_sea_2300_grinstead.R")
+source("../Data/temp_sea_2300_grinstead.R")
 hindcast_length = 122 # there are 122 years from 1880 to 2002
 projection_length = 421 # from 1880 to 2300
 
@@ -71,8 +71,8 @@ from=2 # start from the second year since the first year is an uncertain paramet
 to=hindcast_length #122
 
 # Run differential evolution optimization to find initial starting values..
-source("Scripts/Deoptim_grinsted_model.R")      # physical model
-source("Scripts/minimize_grinsted_residuals.R") # function to minimize the residuals
+source("../Scripts/Deoptim_grinsted_model.R")      # physical model
+source("../Scripts/minimize_grinsted_residuals.R") # function to minimize the residuals
 
 lower=c(0,-1, err_neg[1], 0)
 upper=c(4, 2.5, err_pos[1], 1)
@@ -85,7 +85,7 @@ deoptim.parameters = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2],
 
 #------------------------ Calculate the Residuals  & AR(1) Coefficient --------------------------
 # Load the physical sea-level model converted to R from the equations in Grinsted et al. (2010).
-source("Scripts/sealevel_grinsted_model.R")
+source("../Scripts/sealevel_grinsted_model.R")
 
 # Use the optimized parameters to generate a fit to the data.
 slr.est = grinsted_sealevel(deoptim.parameters, hist.temp)
@@ -160,7 +160,7 @@ bootstrap_parameters[ ,5] = boot.sigma
 
 # Loop over the DEoptim command to generate a distribution of model parameters.
 for(i in 1:NI.boot) {
-  source("Scripts/min_res_grinsted_bootstrapped.R") # function to minimize the residuals of the bootstrap simulations
+  source("../Scripts/min_res_grinsted_bootstrapped.R") # function to minimize the residuals of the bootstrap simulations
   
   lower=c(0,-1, err_neg[1], 0)
   upper=c(4, 2.5, err_pos[1], 1)
@@ -279,7 +279,7 @@ boot.med.projection = grinsted_sealevel(boot.med, rcp85)
 
 #--------------------- Estimate PDF, CDF, and SF of SLR in 2100 & 2050 --------------------------
 # Load survival function Function
-source("Scripts/plot_sf.r")
+source("../Scripts/plot_sf.r")
 
 # Set up a vector for the sea-level anomaly distribution in 2050.
 # The year 2050 is the 171 number in the sequence.
