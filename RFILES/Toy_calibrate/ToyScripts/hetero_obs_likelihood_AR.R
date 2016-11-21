@@ -28,7 +28,7 @@
 #   autocorrelation coefficient
 
 # Use either the approximation method. In the case of small errors the approximation method produces the same results.
-source("../ToyScripts/ar.R")
+source("ToyScripts/ar.R")
 
 #- OR the less stable large matrix method. NOTE: This method takes significantly longer.
 #source("ToyScripts/logl.ar1hetero.r")
