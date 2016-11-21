@@ -4,7 +4,7 @@
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This function sources the toy model used to test where the surprise index fails
-#       as described in Ruckert et al. (GRL 2016). For further description and references,
+#       as described in Ruckert et al. (2016). For further description and references,
 #       please read the paper and appendix.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
