@@ -34,7 +34,7 @@ rm(list =ls()) #Clear global environment
 library(compiler)
 enableJIT(3)
 
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 library(RColorBrewer)
 test.colors = brewer.pal(3, "RdBu")
 test.colors[2] = "gray"
@@ -66,7 +66,7 @@ column_height=2.7
 #pdf(file="SuppFigures/nRuckertetal_sup9.pdf", family="Helvetica", height=5.4, width=6.7, pointsize=11)
 setEPS()
 # postscript(file="SuppFigures/sfigure8a_8d.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=5.4, pointsize=11)
-postscript(file="SuppFigures/sFig8a_8c_fixed.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/sFig8a_8c_fixed.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
            width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 # 1) PDF
