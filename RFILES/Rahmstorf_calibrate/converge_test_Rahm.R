@@ -1,6 +1,6 @@
 ##################################################################################################
 #
-#  -file = "convergence_test.R"   Code written November 2015 edited April 2016
+#  -file = "convergence_test_Rahm.R"   Code written November 2015 edited April 2016
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program loads in the workspace generated from the running the methods with different seeds.
@@ -16,6 +16,7 @@
 #
 ###################################################################################################
 rm(list =ls()) #Clear global environment
+library(coda)
 
 ####################################### Homoskedastic Convergence ################################################################
 #Load in workspaces saved from using multiple seeds
