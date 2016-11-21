@@ -12,6 +12,9 @@
 # Version History:
 #   1.0 - 15 Jan 2015 - Initial coding (G.G.)
 #   1.1 - 03 Feb 2015 - Added support for left.tail (G.G.)
+#   1.2 - 10 Feb 2015 - Added calculation of pdf, cdf, and additional 
+#                       SF information returned for plotting multiple 
+#                       SFs on a single plot (K.L.R.)
 #
 # Note: I wrote this code because I've been asked fairly often for
 # code that does this type of plot.  The original code I had included
@@ -69,5 +72,5 @@ plot.sf <- function(x, xlab=deparse(substitute(x)), left.tail=F,
     plot(x[order.x], sf, log="y", xlab=xlab, ylab=ylab, yaxt="n", ...)
     axis(2, at=10^(-num.ytics:0), label=parse(text=paste("10^", -num.ytics:0, sep="")), las=1)
   }
-  invisible(return(list(sf.num = x[order.x], pdf = pdf.x, cdf = cdf.x, sf = sf, num.ytics = num.ytics)))
+  invisible(list(sf.num = x[order.x], pdf = pdf.x, cdf = cdf.x, sf = sf, num.ytics = num.ytics, order.sf = order.sf))
 }
