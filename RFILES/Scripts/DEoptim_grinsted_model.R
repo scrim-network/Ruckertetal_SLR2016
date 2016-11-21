@@ -1,9 +1,9 @@
 ###################################################################################
 #
-#  -file = "DEoptim_vermeer_model.R"   Code written Sept. 16 2016
+#  -file = "DEoptim_grinsted_model.R"   Code written Sept. 16 2016
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
-#  -This function sources the Vermeer and Rahmstorf(2009) model to be sourced in the DEoptim
+#  -This function sources the Grinsted et al. (2010) model to be sourced in the DEoptim
 #       R function. Deoptim is used in the bootstrap and MCMC codes as described
 #       in Ruckert et al. (2016) to find good initial values for each of the
 #       parameters.
@@ -15,7 +15,7 @@
 # AUTHOR(S) AND VERSION HISTORY REMAIN INTACT.
 #
 # To use this function, simply source this file:
-#   source("DEoptim_vermeer_model.R")
+#   source("DEoptim_grinsted_model.R")
 #
 ###################################################################################
 
