@@ -72,7 +72,8 @@ Required libraries:
 |  4. Rar.R: Estimates the log likelihood of the AR1 process and simulates the lag-1 
 |     autocorrelation coefficient.
 |  5. MODELNAMEobs_likelihood_AR.R: Estimates the AR1 likelihood function for the MCMC methods.
-|  6. RCP_temp_scenarios.R: Fits the Rahmstorf 2007 SLR model with Bootstrap and MCMC methods using 
+|  6. Estimate_surprise_index.R: Script/function used in part to help create the MODELNAME_surprise.csv files
+|  7. RCP_temp_scenarios.R: Fits the Rahmstorf 2007 SLR model with Bootstrap and MCMC methods using 
 |     RCP 2.6, 4.5, 6.0, and 8.5.
  =============================================================================
 
