@@ -104,10 +104,10 @@ b2_p = rahmfunction(original, b2)
 source("bootstrap_Rahm_new.R")
 
 # Method: Bayesian homoskedastic (Markov Chain Monte Carlo assuming AR(1) and homoskedastic residuals)
-source("Rcali_homo_model_AR.R")
+source("cali_homo_model_AR_Rahm.R")
 
 # Method: Bayesian heteroskedastic (Markov Chain Monte Carlo assuming AR(1) and heteroskedastic residuals)
-source("Rcali_heter_model_AR.R")
+source("cali_heter_model_AR_Rahm.R")
 
 #------------------- Step 4: Compare the median, mode, and 99% parameter estimates ------------------------
 # Calculate mode http://www.tutorialspoint.com/r/r_mean_median_mode.htm
