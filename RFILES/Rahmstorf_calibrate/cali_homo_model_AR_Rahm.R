@@ -59,7 +59,7 @@ set.seed(111)
 # set.seed(1234)
 
 # Read in the sea-level rise observations, observation errors, years, and historic and emission temps.
-source("Data/temp_sea_2300.R")
+source("../Data/temp_sea_2300.R")
 hindcast_length = 122 # there are 122 years from 1880 to 2002
 projection_length = 421 # from 1880 to 2300
 
@@ -75,8 +75,8 @@ to=hindcast_length #122
 
 # Run differential evolution optimization to find initial starting values for
 # parameters to use in optimization of the likelihood function.
-source("Scripts/Deoptim_rahm_model.R") # physical model
-source("Scripts/minimize_residuals.R") # function to minimize the residuals
+source("../Scripts/Deoptim_rahm_model.R") # physical model
+source("../Scripts/minimize_residuals.R") # function to minimize the residuals
 
 lower=c(0, -3, err_neg[1])
 upper=c(2,  2, err_pos[1])
@@ -89,7 +89,7 @@ deoptim.parameters = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2],
 
 #------------------------ Calculate the Residuals  & AR(1) Coefficient --------------------------
 # Load the physical sea-level model converted to R from the equaitons in Rahmstorf (2007).
-source("Scripts/sealevel_rahm_model.R")
+source("../Scripts/sealevel_rahm_model.R")
 
 # Use the optimized parameters to generate a fit to the data.
 slr.est = rahmfunction(deoptim.parameters, hist.temp)
@@ -127,7 +127,7 @@ model.p = 3
 y.meas.err = rep(0, length(slr))
 
 # Load the likelihood model assuming correlated residuals.
-source("Scripts/Robs_likelihood_AR.R")
+source("../Scripts/Robs_likelihood_AR.R")
 
 # Optimize the likelihood function to estimate initial starting values.
 p = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2], 
@@ -277,8 +277,7 @@ for(i in 1:homo_subset_length) {
 
 #--------------------- Estimate PDF, CDF, and SF of SLR in 2100 & 2050 --------------------------
 # Load survival function Function
-source("Scripts/plot_sf.r")
-
+source("../Scripts/plot_sf.r")
 
 # Set up a vector for the sea-level anomaly distribution in 2050.
 # The year 2050 is the 171 number in the sequence.
