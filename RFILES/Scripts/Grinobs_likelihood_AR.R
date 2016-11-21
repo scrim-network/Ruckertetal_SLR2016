@@ -26,10 +26,10 @@
 # source in the function that finds the log likelihood and the lag-1
 #   autocorrelation coefficient
 # Use either the approximation method. In the case of small errors the approximation method produces minor differences. For the analysis we use the approximation method.
-source("Scripts/Rar.R")
+source("../Scripts/Rar.R")
 
 #- OR the less stable large matrix method. NOTE: This method takes significantly longer.
-#source("Scripts/logl.ar1hetero.r")
+#source("../Scripts/logl.ar1hetero.r")
 
 
 log.lik = function(p) # model.p is the dimension of model parameters 
