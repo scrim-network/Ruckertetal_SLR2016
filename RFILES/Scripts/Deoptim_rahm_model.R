@@ -25,22 +25,24 @@
 #
 ###################################################################################
 
-model = function(p){
+model = function(p){# p represents the parameters in a vector
     
-    # Estimate the rate, dH, of sea-level change each year, Equation (1)
+    # Estimate the rate, dH, of sea-level change each year, Equation (S17)
     dH = p[1]*(hist.temp - p[2])
+    #p[1] = sensitivity of sea-level to temperature changes
+    #p[2] = temperature when sea-level is zero
 
     # Set up empty vector for sea level anomalies.
-    H = rep(NA, to)
-    H[1] = p[3]
+    H_1 = rep(NA, to)
+    H_1[1] = p[3]     # sea-level in 1880
     
     # Run a forward euler to estimate sea-level over time
     for (i in from:to){
-        H[i] = H[i-1] + dH[i-1]*timestep
+        H_1[i] = H_1[i-1] + dH[i-1]*timestep
     }
     
     # Return sea-level anomalies
-    return(H)
+    return(H_1)
 }
 
 #################################### END ##########################################
