@@ -1,16 +1,12 @@
 #Global sea-level rise code for Ruckert et al. (in prep.)
 
-README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Thu May 26 12:19:51 EST 2016
+README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Mon Nov 21 14:19:51 EST 2016
 
 ##Citation
 
 This code is intended to accompany the results of
 
->Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K. The effects of time-varying observation errors on probabilistic sea-level projections, (in review).
-
-Please cite that paper and the Rahmstorf (2007) study when using any results generated with this code.
-
->Rahmstorf S (2007) A Semi-empirical approach to projecting future sea-level rise _Science_ **315**(5810) 368–370, doi:10.1126/science.1135456.
+>Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K. The effects of time-varying observation errors on semi-empirical sea-level projections, (accepted at Climatic Change).
 
 ##Overview
 
@@ -23,17 +19,15 @@ This code requires R with the following libraries:
 - DEoptim
 - compiler
 
-This R code is intended to help users who wish to work with the sea-level rise projections or methods shown in Ruckert et al. (in prep.) in greater detail than provided in the appendix of the text. Key functionality of these scripts include:
+This R code is intended to help users who wish to work with the sea-level rise projections or methods shown in Ruckert et al. (accepted) in greater detail than provided in the appendix of the text. Key functionality of these scripts include:
 
 1. Global sea-level rise projections from 1880 to 2300 with associated probabilities
 2. How to fit a model to observations with AR1 residuals using Markov Chain Monte Carlo and Bootstrap
 3. Produces plots from the paper
 
-The RFILES directory contains all the scripts and data necessary to run the analysis along with a README file. The prerun analysis output used to generate the Ruckert et al. (in prep.) figures exceeds 100 MB. For access to the prerun analysis please contact the corresponding author. _(Note that the folder directory MUST be in the same format as when downloaded otherwise the scripts will not locate the files/scripts needed to run. Additionally, the following empty folders need to be created before running the analysis: 'Workspace', 'Figures', and 'SuppFigures'. Output will be saved to these folders.)_
+The RFILES directory contains all the scripts and data necessary to run the analysis along with a README file. _(Note that the user may have to edit the scripts according to their folder directory so that the scripts will locate the files/scripts needed to run. Additionally, the following empty folders need to be created before running the analysis: 'Workspace', 'Figures', and 'SuppFigures'. Output will be saved to these folders.)_
 
-The most important functions are **Rar** and **Robs_likelihood_AR** for MCMC calibration, **Deoptim_rahm_model** and **min_res_bootstrapped** for bootstrap calibration, and **sealevel_rahm_model**, which is the Rahmstorf (2007) sea-level model.
-
-To fit the sea-level model to all methods, simply open R and source **Mega_Rahmstorf** (Note, this runs ~5hrs). Then source **PlotRuckert_etal** to generate plots.
+Instructions on how to run the scripts can be found in the README file in the RFILES directory. The main files for running the analysis with the Vermeer and Rahmtstorf (2009) model can be found in the VR_calibrate folder. The files to run with the Grinsted et al. (2010) model are in the Grinsted_calibrate folder and the main files for the Rahmstorf (2007) analysis are in the Rahmstorf_calibrate folder.
 
 All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. However, the program cannot be simply sourced. It requires the user to designate the length of observations and the assumptions.
 
