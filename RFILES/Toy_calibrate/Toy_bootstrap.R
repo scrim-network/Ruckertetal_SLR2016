@@ -29,7 +29,7 @@ library(DEoptim)
 library(compiler)
 enableJIT(3)
 
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 
 #----------------------- Step 1: Choose the number of observations ----------------------------#
 datalength = 200
@@ -75,7 +75,7 @@ project = 1:plength
 p.obs = model(parms,project)
 
 #Plot the observations and the best fit
-pdf(file="ToyFigures/plot1.pdf")
+pdf(file="../ToyFigures/plot1.pdf")
 par(mfrow=c(1,1))
 plot(x, obs, pch=20, xlab="x", ylab="Observations")
 lines(x, y.obs$mod.obs, lwd=2, col="blue")
@@ -89,7 +89,7 @@ res <- obs - y.obs$mod.obs
 #---------- Bootstrap the Residuals & Save AR(1) Coefficient and Sigma ---------
 ### We need to retain the auto-correlated structure of the residuals ###
 ### determine AR coefficients of the original residuals (data - polynomial fit)  ###
-pdf(file="ToyFigures/plot1a.pdf")  # write to pdf, define a pdf file to write to
+pdf(file="../ToyFigures/plot1a.pdf")  # write to pdf, define a pdf file to write to
 rho=rep(NA,3)
 ac <- acf(res, lag.max=5, plot=TRUE, main="Autocorrelated Residuals")  # apply auto-correlation to determine correlation coefficientsrho[1] <- ac$acf[ 1 ]
 rho[2] <- ac$acf[ 2 ]
@@ -124,7 +124,7 @@ for(i in 1:N) {
 }
 
 #Plot the best hindcast with fits (N bootstrap samples)
-pdf(file="ToyFigures/plot2.pdf")  # write to pdf, define a pdf file to write to
+pdf(file="../ToyFigures/plot2.pdf")  # write to pdf, define a pdf file to write to
 plot(x, lin.boot[1,], type="l",main="Hindcast Fit + Noise",
      xlab="x",ylab="observations",col="black",lwd=1,ylim=c(0,40))
 for(i in 1:N) {
@@ -176,7 +176,7 @@ for(i in 1:plength) {
 #----------------------------------------------------------------
 #Plot the smoothed projected fits
 #Some observations should be outside the range of the fits
-pdf(file="ToyFigures/plot3.pdf")  # write to pdf, define a pdf file to write to
+pdf(file="../ToyFigures/plot3.pdf")  # write to pdf, define a pdf file to write to
 plot(project, boot.fit_proj[1,], type="l",main="Projected Smooth Fits",
      xlab="x",ylab="observations",col="black",lwd=1,ylim=c(0,60))
 for(i in 1:N) {
@@ -207,7 +207,7 @@ for(i in 1:N) {
 #------------------------ Analyze the Results ------------------------------------
 #Plot the projected fits with the added noise
 # The range should encompass all of the observations
-pdf(file="ToyFigures/plot4.pdf")  # write to pdf, define a pdf file to write to
+pdf(file="../ToyFigures/plot4.pdf")  # write to pdf, define a pdf file to write to
 plot(project, boot.proj[1,], type="l",main="Projected Fits + Noise",
      xlab="x",ylab="observations",col="black",lwd=1,ylim=c(0,60))
 for(i in 1:N) {
@@ -236,7 +236,7 @@ boot_x=c(boot_f, rev(boot_nf)); boot_y=c(project, rev(project))
 # low numbers: 0.45,0.40,0.35,0.30,0.25,0.20,0.15,0.10,0.05,0.04,0.025,0.02,0.015,0.01,0.005,0
 # high numbers:0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,0.96,0.975,0.98,0.985,0.99,0.995,100
 
-pdf(file="ToyFigures/plot5.pdf")
+pdf(file="../ToyFigures/plot5.pdf")
 plot(x, y.obs$mod.obs, type="l",xlab="x",ylab="Observations", 
      ylim=c(0,40), xlim=c(0,200))
 #Plot the 90% confidence interval envelope
@@ -296,7 +296,7 @@ dev.off()
 pdfa = density(boot.fit_coef[,1])
 pdfb = density(boot.fit_coef[,2])
 
-pdf(file="ToyFigures/plot7.pdf", width=3.5, height=5.4)
+pdf(file="../ToyFigures/plot7.pdf", width=3.5, height=5.4)
 par(mfrow=c(2,1), mgp=c(1.5,.5,0),mar=c(2.5,4,4,2))
 plot(pdfa, col="blue", xlab="a", ylab="Probability Density", main="", yaxt="n")
 put.fig.letter("a",font=2)
