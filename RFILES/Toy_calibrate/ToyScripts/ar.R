@@ -5,7 +5,7 @@
 #
 #  -This function finds the log likelihood for a zero-mean AR1 process and the
 #       simulated lag-1 autocorrelation coefficient for the model. Both outputs are
-#       used in the MCMC likelihood programs as described in Ruckert et al. (GRL 2016). For
+#       used in the MCMC likelihood programs as described in Ruckert et al. (2016). For
 #       further description and references, please read the paper and the appendix.
 #
 #   -NOTE: The innovation variance = sigma^2 and the lag-1 autocorrelation
