@@ -4,7 +4,7 @@
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program loads in temperature and global sea-level data for use in model
-#       and uncertainty calculations described in Ruckert et al. (2016). For
+#       and uncertainty calculations described in Ruckert et al. (accepted). For
 #       further description and references, please read the paper.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
@@ -39,7 +39,7 @@
 # rcp85, merged historical + rcp 8.5 temperatures from 1880 to 2300 in C
 # scenario_time, , time in years from 1880 to 2100 (5yr increments)
 # max to b2, merged historical + IPCC temperature scenarios from 1880-2100 in C (5yr increments)
-temp.data = read.csv("Data/NOAA_IPCC_RCPtempsscenarios.csv")
+temp.data = read.csv("../Data/NOAA_IPCC_RCPtempsscenarios.csv")
 alltime = temp.data[, 1]
 hist.temp = temp.data[1:122, 2]
 rcp85 = temp.data[, 4]
@@ -58,7 +58,7 @@ b2 = temp.data[1:45, 13]
 # slr, global mean sea level in mm
 # err.obs, global mean sea level measurement error in mm
 # Divide vectors by 10 to convert to cm
-church = read.table("Data/church_13221.txt")
+church = read.table("../Data/church_13221.txt")
 year = church[11:132, 1]
 slr = church[11:132, 2]/10
 err.obs = church[11:132, 3]/10
