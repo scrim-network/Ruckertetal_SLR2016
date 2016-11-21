@@ -80,19 +80,18 @@ Required libraries:
  =============================================================================
 | Short description of the toy scripts:
 |  The toy scripts are meant to show/ teach how to fit a model using MCMC or the bootstrap 
-|  method.
-|  Additionally, they were used to test bias in the surprise index. The program requires 
-|  the user to designate the length of observations and the assumptions, so the scripts 
-|  can not be sourced.
+|  method.The program requires the user to designate the length of observations. The toy
+|  scripts are meant to be run line by line and not sourced.
 |  
-|  1. Toy_MCMC_Test1.R: Generates a User defined number of iid observations and fits a 
+|  Additionally, they were used to test bias in the surprise index. 
+|  
+|  1. Toy_MCMC_IID.R: Generates a User defined number of iid observations and fits a 
 |     simple model to the observations with MCMC. 
-|  2. Toy_MCMC_Test2a.R: Generates 200 homoskedastic AR observations and fits a simple 
+|  2. Toy_MCMC_AR1.R: Generates 200 homoskedastic AR observations and fits a simple 
 |     two-parameter linear model to the observations with MCMC. 
-|  3. Toy_MCMC_Test2b.R: Generates 200 heteroskedastic AR observations and fits a simple 
-|     two-parameter linear modelmodel to the observations with MCMC.
-|  4. Toy_TestMCMC_plots.R: Loads in the results from test scripts 1, 2a, and 2b to test 
-|     why the surprise index fails in the low probabilities. It produces S. Fig. 8.
+|  3. Toy_MCMC_HETER_AR1.R: Generates a User defined number of heteroskedastic AR observations  
+|     and fits a simple two-parameter linear modelmodel to the observations with MCMC.
+|  4. Toy_TestMCMC_plots.R: Loads in the results from the first 3 scripts and plot S. Fig. 3.
 |  5. Toy_bootstrap.R: This program will run and plot the bootstrap method for a simple 
 |     two-parameter linear model with AR1 residuals. 
 |  6. testAR1vsIID.R: This program assesses the impact of AR1 representation on model calibration.  
