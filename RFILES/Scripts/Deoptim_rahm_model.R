@@ -5,7 +5,7 @@
 #
 #  -This function sources the Rahmstorf(2007) model to be sourced in the DEoptim
 #       R function. Deoptim is used in the bootstrap and MCMC codes as described
-#       in Ruckert et al. (GRL 2016) to find good initial values for each of the
+#       in Ruckert et al. (accepted) to find good initial values for each of the
 #       parameters.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
