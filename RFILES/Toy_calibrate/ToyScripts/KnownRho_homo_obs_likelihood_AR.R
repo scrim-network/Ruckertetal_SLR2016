@@ -23,7 +23,7 @@
 # AUTHOR(S) AND VERSION HISTORY REMAIN INTACT.
 #
 # To use this function, simply source this file:
-#   source("toy_obs_likelihood_AR.R")
+#   source("KnownRho_homo_obs_likelihood_AR.R")
 #
 ################################################################################
 
