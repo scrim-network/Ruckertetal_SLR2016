@@ -38,7 +38,7 @@ library(compiler)
 enableJIT(3)
 set.seed(1234)
 # set.seed(111)
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 
 # 1: Set up the true model & Generate generate AR 1 errors
 datalength = 200
@@ -353,7 +353,7 @@ column_height=2.7
 
 # pdf(file="SuppFigures/sFig_AR1vsIID.pdf", family="Helvetica", height=column_height*2, width=double_column, pointsize=11)
 setEPS()
-postscript(file="SuppFigures/sFig_AR1vsIID_fixed.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/sFig_AR1vsIID_fixed.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
          width=double_column, height=column_height*3, pointsize=13)
 par(mfrow=c(3,2), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 plot(x, obs, type="l",xlab="x",ylab="Observations") #, ylim=c(-2,6))
