@@ -25,7 +25,7 @@ load("Workspace/Bootstrap_Grinsted_SLR_model_workspace.RData")
 load("Workspace/Homoskedastic_Grinsted_SLR_model_workspace.RData")
 load("Workspace/Heteroskedastic_Grinsted_SLR_model_workspace.RData")
 
-source("Scripts/put_fig_letter.R")
+source("../Scripts/put_fig_letter.R")
 ######################################## MAIN FIGURES #############################################
 
 # Calculate the 90% confidence interval for each method and upper tail estimates
@@ -151,7 +151,7 @@ boot_x_90=c(boot_5, rev(boot_95)); boot_y_90=c(years.mod, rev(years.mod))
 
 setEPS()
 # postscript(file="SuppFigures/sfigure2a_2b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="Figures/Fig1_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig1_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*2, pointsize=11)
 
 layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
@@ -181,7 +181,7 @@ dev.off()
 #    90% credible interval projections to 2100 (c)
 #
 # Load in previously calculated surprise index information
-surprise = read.csv("Data/grinsted_surprise.csv")
+surprise = read.csv("../Data/grinsted_surprise.csv")
 percent = surprise[1:16,1]
 boots = surprise[1:16,3]
 homos = surprise[1:16,5]
@@ -192,7 +192,7 @@ heter_deviation = surprise[1:16,11]
 
 setEPS()
 # postscript(file="Figures/figure1a_1b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="Figures/Fig2_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../Figures/Fig2_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*2, pointsize=11)
 par(mfrow=c(2,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
@@ -254,7 +254,7 @@ dev.off()
 # 3) Probability density functions of each of the parameters estimated
 
 setEPS()
-# postscript(file="Figures/figure3a_3c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
+# postscript(file="../Figures/figure3a_3c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
 postscript(file="Figures/Fig3_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
            width=double_column, height=column_height*3, pointsize=13)
 par(mfrow=c(3,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
@@ -316,7 +316,7 @@ dev.off()
 # 4) A probability density function (a), CDF (b), and SF (c) of sea-level rise in the year 2050 & 2100.
 
 setEPS()
-# postscript(file="Figures/figure4a_4c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
+# postscript(file="../Figures/figure4a_4c.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=8.1, pointsize=13)
 postscript(file="Figures/Fig4_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=double_column, height=column_height*3, pointsize=13)
 par(mfrow=c(3,2), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
@@ -381,7 +381,7 @@ dev.off()
 
 setEPS()
 # postscript(file="SuppFigures/sfigure1a_1b.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=6.7, height=2.7, pointsize=9)
-postscript(file="SuppFigures/SFig1_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/SFig1_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=single_column, height=column_height, pointsize=9)
 par(mfrow=c(1,1), mgp=c(1.5,.5,0), mar=c(3.5,4,1,1))
 
@@ -416,7 +416,7 @@ studies.colors <- c(test.colors[1:3], "black", "black", "black", "black", "black
 
 setEPS()
 # postscript(file="SuppFigures/sfigure5.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica", width=3.5, height=2.7, pointsize=9)
-postscript(file="SuppFigures/SFig2_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
+postscript(file="../SuppFigures/SFig2_grinsted.eps", horizontal = FALSE, onefile = FALSE, paper = "special", family="Helvetica",
 width=single_column, height=column_height, pointsize=9)
 par(mfrow=c(1,1), mgp=c(1.5,.5,0),  mar=c(3.5,4,1,1)) # set figure dimensions
 
