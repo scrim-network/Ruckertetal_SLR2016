@@ -3,9 +3,9 @@
 #  -file = "de_boot.R"   Code written March 2014
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
-#  -This function sources the Rahmstorf(2007) model to be sourced in the DEoptim
+#  -This function sources a simple linear model to be sourced in the DEoptim
 #       R function. Deoptim is used in the bootstrap and MCMC codes as described
-#       in Ruckert et al. (GRL 2016) to find good initial values for each of the
+#       in Ruckert et al. (2016) to find good initial values for each of the
 #       parameters.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
@@ -21,7 +21,7 @@
 
 model = function(p){ # p represents the parameters in a vector
   
-  obser=p[1]+p[2]*x # dH represent the rate of the sea-level rise
+  obser=p[1]+p[2]*x # estimate observations using a linear model
   #p[1] = a
   #p[2] = b
   return(obser)
