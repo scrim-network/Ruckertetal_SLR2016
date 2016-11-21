@@ -5,7 +5,7 @@
 #  - Edited to run SLR model by: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This function computes the log likelihood for a zero-mean AR1 process from
-#       sea-level rise observations as described in  Ruckert et al. (GRL 2016).
+#       sea-level rise observations as described in  Ruckert et al. (accepted).
 #       For further description and references, please read the paper
 #       and the appendix.
 #
