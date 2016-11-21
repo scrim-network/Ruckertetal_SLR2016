@@ -5,16 +5,14 @@
 #  - Edits by: Kelsey Ruckert (klr324@psu.edu) February 2015
 #
 #  -This function computes the log likelihood for a zero-mean AR1 process from
-#       observations. The observations include i.i.d. and AR(1) assuming
-#       homoskedastic or heteroskedastic. The tests using this program are
+#       observations. The observations are i.i.d. The tests using this program are
 #       described in the appendix of Ruckert et al. (2016). For further
 #       description and references, please read the paper
 #       and the appendix.
 #
-#   -NOTE: Before sourcing this code make sure the code is set to run for either
-#       Ar(1) observations or iid observations. Descriptions of how to use this
-#       for other observations and models can be found in the R package in review
-#       "VAR1"
+#   -Descriptions of how to use this for other observations and models
+#        can be found in the R package in review "VAR1"
+#       
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
 # NOT IMPLICIT).  I SHARE THIS CODE IN HOPES THAT IT IS USEFUL, 
