@@ -4,7 +4,7 @@
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program runs a bootstrap analysis of global sea-level
-#       as described in Ruckert et al. (2016). For further
+#       as described in Ruckert et al. (accepted). For further
 #       description and references, please read the paper.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
@@ -61,7 +61,7 @@ set.seed(111)
 # set.seed(1234)
 
 # Read in the sea-level rise observations, observation errors, years, and historic and emission temps.
-source("Data/temp_sea_2300.R")
+source("../Data/temp_sea_2300.R")
 hindcast_length = 122 # there are 122 years from 1880 to 2002
 projection_length = 421 # from 1880 to 2300
 
@@ -76,8 +76,8 @@ from=2 # start from the second year since the first year is an uncertain paramet
 to=hindcast_length #122
 
 # Run differential evolution optimization to find initial starting values..
-source("Scripts/Deoptim_rahm_model.R") # physical model
-source("Scripts/minimize_residuals.R") # function to minimize the residuals
+source("../Scripts/Deoptim_rahm_model.R") # physical model
+source("../Scripts/minimize_residuals.R") # function to minimize the residuals
 
 lower=c(0, -3, err_neg[1])
 upper=c(2,  2, err_pos[1])
@@ -90,7 +90,7 @@ deoptim.parameters = c(outDEoptim$optim$bestmem[1], outDEoptim$optim$bestmem[2],
 
 #------------------------ Calculate the Residuals  & AR(1) Coefficient --------------------------
 # Load the physical sea-level model converted to R from the equaitons in Rahmstorf (2007).
-source("Scripts/sealevel_rahm_model.R")
+source("../Scripts/sealevel_rahm_model.R")
 
 # Use the optimized parameters to generate a fit to the data.
 slr.est = rahmfunction(deoptim.parameters, hist.temp)
@@ -99,7 +99,7 @@ slr.est = rahmfunction(deoptim.parameters, hist.temp)
 #plot(year, slr/100, pch=20, ylab="Sea-level anomaly [m]", xlab="Year")
 #lines(year, slr.est$sle/100, col="blue", lwd=2)
 
-# Calculate residuals from the fit to the data. Equation (S5)
+# Calculate residuals from the fit to the data. Equation (S6)
 res = slr - slr.est$sle
 
 # Apply the auto-correlation function to determine rho,
@@ -134,14 +134,14 @@ for(i in 1:NI.boot){
 }
 
 # IMPORTANT: estimate the uncorrelated white noise variance from the stationary process vaiance to avoid accounting
-# for autocorrelation twice. Equation (S6)
+# for autocorrelation twice. Equation (S7)
 boot.sigma = sqrt((sigma.boot_sd^2)*(1-(rho[2]^2)))
 
 # Estimate the bootstrapped residuals with the AR(1) coefficient and sigma.
 boostrapped_RES_hind = mat.or.vec(NI.boot, nyears.obs) #(nr,nc)
 for(n in 1:NI.boot) {
     for(i in 2:nyears.obs) {
-        # Equation (S4)
+        # Equation (4-5 & S3-S4)
         boostrapped_RES_hind[n,i] = rho[2]*boostrapped_RES_hind[n,i-1] +
         rnorm(1, mean = 0, sd = boot.sigma[n])
     }
@@ -165,7 +165,7 @@ bootstrap_parameters[ ,4] = boot.sigma
 
 # Loop over the DEoptim command to generate a distribution of model parameters.
 for(i in 1:NI.boot) {
-    source("Scripts/min_res_bootstrapped.R") # function to minimize the residuals of the bootstrap simulations
+    source("../Scripts/min_res_bootstrapped.R") # function to minimize the residuals of the bootstrap simulations
     
     lower = c(0, -3, err_neg[1])
     upper = c(2,  2, err_pos[1])
@@ -200,7 +200,7 @@ to = hindcast_length
 # Loop over the sea level model to generate a distribution of sea level rates
 # and sea level simulations.
 for(n in 1:NI.boot) {
-    # Estimate the sea level rate of change: equation (1)
+    # Estimate the sea level rate of change: equation (S17)
     boot.RATE[n, ] = alpha.boot[n]*(hist.temp - T_0.boot[n])
     boot.fit[n, 1] = H_0.boot[n]
     
@@ -228,7 +228,7 @@ proj.boot.sim = mat.or.vec(NI.boot, nyears.mod) #(nr,nc)
 # Loop over the sea level model to generate a distribution of sea level rates
 # and sea level simulations.
 for(n in 1:NI.boot) {
-    # Estimate the sea level rate of change: equation (1)
+    # Estimate the sea level rate of change: equation (S17)
     proj.boot.RATE[n, ] = alpha.boot[n]*(rcp85 - T_0.boot[n])
     proj.boot.sim[n, 1] = H_0.boot[n]
 
@@ -242,7 +242,7 @@ for(n in 1:NI.boot) {
 Resid_projection_boot = mat.or.vec(NI.boot, nyears.mod) #(nr,nc)
 for(n in 1:NI.boot) {
   for(i in 2:nyears.mod) {
-      # Equation (S4)
+      # Equation (4-5 & S3-S4)
       Resid_projection_boot[n,i] = rho[2]*Resid_projection_boot[n,i-1] +
       rnorm(1, mean = 0, sd = boot.sigma[n])
   }
@@ -275,7 +275,7 @@ boot.med.projection = rahmfunction(boot.med, rcp85)
 
 #--------------------- Estimate PDF, CDF, and SF of SLR in 2100 & 2050 --------------------------
 # Load survival function Function
-source("Scripts/plot_sf.r")
+source("../Scripts/plot_sf.r")
 
 # Set up a vector for the sea-level anomaly distribution in 2050.
 # The year 2050 is the 171 number in the sequence.
