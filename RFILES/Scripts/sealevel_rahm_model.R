@@ -26,17 +26,17 @@
 #
 ###################################################################################
 
-rahmfunction = function(parameters, Temp){
+rahmfunction = function(parameters, Temp){ #inputs are parameters and temperature
     
     # Determine number of model parameters
     model.p = length(parameters)
     
     # Extract parameter values
-    a = parameters[1]
-    Ti = parameters[2]
-    initialvalue = parameters[3]
+    a = parameters[1]             # sensitivity of sea-level to temperature changes
+    Ti = parameters[2]            # temperature when sea-level is zero
+    initialvalue = parameters[3]  # initial value of sea-level in 1880
     
-    # Estimate the rate of sea-level change each year, Equation (1)
+    # Estimate the rate of sea-level change each year, Equation (S17)
     rate = a*(Temp - Ti)
     
     # Set up empty vector for sea level anomalies.
