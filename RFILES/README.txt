@@ -1,8 +1,7 @@
-  The effects of time-varying observation errors on probabilistic sea-level projections
+  The effects of time-varying observation errors on semi-empirical sea-level projections
 
   Reference:
-  Ruckert, KL, Guan, Y, Bakker, AMR, Forest, FE, and Keller, K. Improving the statistical
-  method can raise the upper tail of sea-level projections, (in review).
+  Ruckert, KL, Guan, Y, Bakker, AMR, Forest, FE, and Keller, K. The effects of time-varying observation errors on semi-empirical sea-level projections, (accepted at Climatic Change).
 
   This program is distributed in the hope that it will be useful,
   but WITH NO WARRANTY (NEITHER EXPLICITNOR IMPLICIT). We are not liable
@@ -12,12 +11,39 @@
 
     Kelsey Ruckert, klr324@psu.edu
     Yawen Guan, yig5031@psu.edu
-
+            
+            Using the Vermeer & Rahmstorf 2009 model
  ===================================================================
 | For the impatient:(NOTE:This program runs for roughly 5 hours)    |
-|  1. Start R                                                       |
-|  2. Type source(“Mega_Rahmstorf.R”)                               |
-|  3. Type source(“PlotRuckert_etal.R”)                             |
+|  1. cd VR_calibrate                                               |
+|  2. makedir Workspace                                             |
+|  3. Start R                                                       |
+|  4. Type source(“cali_homo_model_AR_VR09.R”)                      |
+|  5. Type source(“cali_heter_model_AR_VR09.R”)                     |
+|  6. Type source(“bootstrap_VR09.R”)                               |
+|  7. Type source(“PlotRuckert_etal_VR.R”)                          |
+ ===================================================================
+ 
+             Using the Grinsted et al. 2010 model
+  ===================================================================
+| For the impatient:(NOTE:This program runs for roughly 5 hours)    |
+|  1. cd Grinsted_calibrate                                         |
+|  2. makedir Workspace                                             |
+|  3. Start R                                                       |
+|  4. Type source(“cali_homo_model_AR_grinsted.R”)                  |
+|  5. Type source(“cali_heter_model_AR_grinsted.R”)                 |
+|  6. Type source(“bootstrap_grinsted.R”)                           |
+|  7. Type source(“PlotRuckert_etal_Grinsted.R”)                    |
+ ===================================================================
+
+            Using the Rahmstorf 2007 model
+ ===================================================================
+| For the impatient:(NOTE:This program runs for roughly 5 hours)    |
+|  1. cd Rahmstorf_calibrate                                        |
+|  2. makedir Workspace                                             |
+|  3. Start R                                                       |
+|  4. Type source(“Mega_Rahmstorf.R”)                               |
+|  5. Type source(“PlotRuckert_etal.R”)                             |
  ===================================================================
 
 Required software:
@@ -32,28 +58,23 @@ Required libraries:
     DEoptim
     compiler
 
-   Please note that the folder directory MUST be in the same format as when downloaded
-   otherwise the scripts will not locate the files/scripts needed to run.
+   Please note that scripts may need to be changed to point to the correct 
+   location of the files/script in order to run.
 
  =============================================================================
 | Short description of main R scripts:
 |  The main scripts were used in the analysis of the paper.
 |
-|  1. Mega_Rahmstorf.R: Script that runs all three model fitting methods when sourced.
-|  2. bootstrap_Rahm_new.R: Bootstrap fitting of the Rahmstorf SLR model.
-|  3. Rcali_homo_model_AR.R: Homoskedastic AR1 Markov Chain Monte Carlo (MCMC) fitting of  
-|     the Rahmstorf SLR model.
-|  4. Rcali_heter_model_AR.R: Heteroskedastic AR1 MCMC fitting of the Rahmstorf SLR model.      
-|  5. converge_test.R: Tests MCMC convergence based on the Potential Scale Reduction 
-|     factor.
-|  6. RCP_temp_scenarios.R: Fits the SLR model with Bootstrap and MCMC methods using 
-|     RCP 2.6, 4.5, 6.0, and 8.0 and plots S. Fig. 4.
-|  7. Rar.R: Estimates the log likelihood of the AR1 process and simulates the lag-1 
+|  1. bootstrap_MODELNAME.R: Bootstrap fitting of a SLR model.
+|  2. cali_homo_model_AR_MODELNAME.R: Homoskedastic AR1 Markov Chain Monte Carlo (MCMC) fitting of  
+|     a SLR model.
+|  3. cali_heter_model_AR_MODELNAME.R: Heteroskedastic AR1 MCMC fitting of a SLR model.      
+|  4. Rar.R: Estimates the log likelihood of the AR1 process and simulates the lag-1 
 |     autocorrelation coefficient.
-|  8. Robs_likelihood_AR.R: Estimates the AR1 likelihood function for the MCMC methods.
+|  5. MODELNAMEobs_likelihood_AR.R: Estimates the AR1 likelihood function for the MCMC methods.
+|  6. RCP_temp_scenarios.R: Fits the Rahmstorf 2007 SLR model with Bootstrap and MCMC methods using 
+|     RCP 2.6, 4.5, 6.0, and 8.5.
  =============================================================================
-
-
 
  =============================================================================
 | Short description of the toy scripts:
@@ -77,8 +98,15 @@ Required libraries:
  =============================================================================
 
 Credits:
-    SLR Model: 
+    SLR Models: 
     Rahmstorf S (2007) A Semi-empirical approach to projecting future sea-level rise 
         Science 315(5810) 368–370, doi:10.1126/science.1135456.
+        
+    Grinsted A, Moore JC, and Jevrejeva S (2010) Reconstructing sea level from paleo and projected temperatures 200 to 2100 A.D. 
+        Clim Dyn 34(4):461–472. doi:10.1007/s00382-008-0507-2
+        
+    Vermeer M and Rahmstorf S (2009) Global sea level linked to global temperature. Proceedings of the National 
+	      Academy of Sciences 106(51):21527-21532, doi:10.1073/pnas/0907765106
+
 
 
