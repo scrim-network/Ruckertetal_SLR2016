@@ -4,7 +4,7 @@
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program loads and analyses global sea-level and temperature
-#       data as described in Ruckert et al. (2016). It also produces
+#       data as described in Ruckert et al. (accepted). It also produces
 #       the graphs shown in that paper. The graphs will be saved as pdf files
 #       in the current working directory. For further description and references,
 #       please read the paper.
@@ -64,11 +64,11 @@ enableJIT(3)
 #--------------------- Step 1: Read in all data. ----------------------------------
 # This includes historical temperatures, emission temperatures,
 #       and sea-level data.
-source("Data/temp_sea_2300.R")
+source("../Data/temp_sea_2300.R")
 
 #--------------------- Step 2: Reproduce the Rahmstorf projections: ----------------
 # Load the physical sea-level model converted to R from the equaitons in Rahmstorf (2007).
-source("Scripts/sealevel_rahm_model.R")
+source("../Scripts/sealevel_rahm_model.R")
 
 # Physical model parameters
 # [1] alpha =  .34      sensitivity of SLR to temperature change (cm/year/C)
