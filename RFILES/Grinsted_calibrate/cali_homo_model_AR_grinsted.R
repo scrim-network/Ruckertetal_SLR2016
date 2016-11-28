@@ -187,7 +187,7 @@ step.mcmc = step
 # Run MCMC calibration.
 mcmc.out.homo = MCMC(log.post, NI, p0, scale=step.mcmc, adapt=TRUE, acc.rate=accept.mcmc,gamma=gamma.mcmc, list=TRUE,
                  n.start=round(0.01*NI))
-homoskchain = mcmc.out1$samples
+homoskchain = mcmc.out.homo$samples
 
 #--------------------------------- Test for convergence ----------------------------------------
 library(coda)
