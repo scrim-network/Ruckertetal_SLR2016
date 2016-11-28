@@ -160,6 +160,10 @@ mcmc.out1 = MCMC(log.post, NI, p0, scale=step.mcmc, adapt=TRUE, acc.rate=accept.
                  n.start=round(0.01*NI))
 prechain1 = mcmc.out1$samples
 
+# Identify the burn-in period and subtract it from the chains.
+burnin = seq(1, 0.02*NI, 1) # 1% burnin
+hetChainBurnin <- prechain1[-burnin,]
+
 #--------------------------------- Test for convergence ----------------------------------------
 library(coda)
 # heidel.diag(prechain1, eps=0.1, pvalue=0.05)
@@ -184,10 +188,6 @@ rm(mcmc.out1780, prechain1780, heter, heter2, heterlist)
 set.seed(111)
 
 #-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------
-# Identify the burn-in period and subtract it from the chains.
-burnin = seq(1, 0.02*NI, 1) # 1% burnin
-hetChainBurnin <- prechain1[-burnin,]
-
 # Find the probability density function for each of the estimated parameters.
 heter.pdfa <- density(hetChainBurnin[ ,1])
 heter.pdfT_0 <- density(hetChainBurnin[ ,2])
