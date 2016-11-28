@@ -189,6 +189,10 @@ mcmc.out.homo = MCMC(log.post, NI, p0, scale=step.mcmc, adapt=TRUE, acc.rate=acc
                  n.start=round(0.01*NI))
 homoskchain = mcmc.out.homo$samples
 
+# Identify the burn-in period and subtract it from the chains.
+burnin = seq(1, 0.02*NI, 1) # 2% burnin
+homChainBurnin <- homoskchain[-burnin,]
+  
 #--------------------------------- Test for convergence ----------------------------------------
 library(coda)
 # heidel.diag(prechain1, eps=0.1, pvalue=0.05)
@@ -213,10 +217,6 @@ rm(mcmc.out1780, prechain1780, homo, homo2, homolist)
 set.seed(111)
 
 #-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------
-# Identify the burn-in period and subtract it from the chains.
-burnin = seq(1, 0.02*NI, 1) # 2% burnin
-homChainBurnin <- homoskchain[-burnin,]
-
 # Find the probability density function for each of the estimated parameters
 homo.pdfa <- density(homChainBurnin[ ,1])
 homo.pdfb <- density(homChainBurnin[ ,2])
