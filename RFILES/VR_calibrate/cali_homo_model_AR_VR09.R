@@ -162,6 +162,10 @@ mcmc.out.homo = MCMC(log.post, NI, p0, scale=step.mcmc, adapt=TRUE, acc.rate=acc
                  n.start=round(0.01*NI))
 homoskchain = mcmc.out.homo$samples
 
+# Identify the burn-in period and subtract it from the chains.
+burnin = seq(1, 0.01*NI, 1) # 1% burnin
+homChainBurnin <- homoskchain[-burnin,]
+
 #--------------------------------- Test for convergence ----------------------------------------
 library(coda)
 # heidel.diag(prechain1, eps=0.1, pvalue=0.05)
@@ -186,10 +190,6 @@ rm(mcmc.out1780, prechain1780, homo, homo2, homolist)
 set.seed(111)
 
 #-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------
-# Identify the burn-in period and subtract it from the chains.
-burnin = seq(1, 0.01*NI, 1) # 1% burnin
-homChainBurnin <- homoskchain[-burnin,]
-
 # Find the probability density function for each of the estimated parameters
 homo.pdfa <- density(homChainBurnin[ ,1])
 homo.pdfT_0 <- density(homChainBurnin[ ,2])
@@ -213,7 +213,6 @@ homo.med.projection = VR_SL_model(homo.med, rcp85) #421 #best fit projection
 # Thin the chain to a subset; ~20,000 is sufficient.
 homo_subset_length = 20000
 homo_sub_chain = homChainBurnin[sample(nrow(homChainBurnin), size=homo_subset_length, replace=FALSE), ]
-
 
 ## Run multiple times with different seeds to check for convergence &
 ## robustness of the results:
