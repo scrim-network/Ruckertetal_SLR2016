@@ -239,7 +239,7 @@ homo.med.projection = grinsted_sealevel(homo.med, rcp85) #421 #best fit projecti
 
 # Thin the chain to a subset; ~20,000 is sufficient.
 homo_subset_length = 20000
-homo_sub_chain = homChainBurnin[sample(nrow(homChainBurnin), size=subset_length, replace=FALSE), ]
+homo_sub_chain = homChainBurnin[sample(nrow(homChainBurnin), size=homo_subset_length, replace=FALSE), ]
 
 
 ## Run multiple times with different seeds to check for convergence &
@@ -256,7 +256,7 @@ par(mfrow=c(3,2))
 for(i in 1:6){
   plot(density(homChainBurnin[ ,i]), type="l",
        xlab=paste('Parameter =',' ', parnames[i], sep=''), ylab="PDF", main="")
-  lines(density(sub_chain[ ,i]), col="red")
+  lines(density(homo_sub_chain[ ,i]), col="red")
 }
 dev.off()
 
