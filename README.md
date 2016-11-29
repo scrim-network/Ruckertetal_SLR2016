@@ -30,7 +30,7 @@ The RFILES directory contains all the scripts and data necessary to run the anal
 
 Instructions on how to run the scripts can be found in the README file in the RFILES directory. The main files for running the analysis with the Vermeer and Rahmtstorf (2009) model can be found in the VR_calibrate folder. The files to run with the Grinsted et al. (2010) model are in the Grinsted_calibrate folder and the main files for the Rahmstorf (2007) analysis are in the Rahmstorf_calibrate folder.
 
-All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. These files should be run line by line instead of sources. Several files require the user to designate the length of observations.
+All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. These files should be run line by line instead of sourced. Several files require the user to designate the length of observations.
 
 ##Contact
 Kelsey Ruckert: <klr324@psu.edu>  
