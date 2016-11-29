@@ -1,6 +1,6 @@
 #################################################################################
 #
-#  -file = "Rcali_heter_model_AR.R"   Code written August 2014
+#  -file = "cali_heter_model_AR_grinsted.R"   Code written August 2014
 #  - Author: Kelsey Ruckert (klr324@psu.edu)
 #
 #  -This program runs a Markov Chain Monte Carlo analysis of global sea-level
@@ -8,7 +8,7 @@
 #       For further description and references, please read the paper.
 #
 # THIS CODE IS PROVIDED AS-IS WITH NO WARRANTY (NEITHER EXPLICIT
-# NOT IMPLICIT).  I SHARE THIS CODE IN HOPES THAT IT IS USEFUL,
+# NOR IMPLICIT).  I SHARE THIS CODE IN HOPES THAT IT IS USEFUL,
 # BUT I AM NOT LIABLE FOR THE BEHAVIOR OF THIS CODE IN YOUR OWN
 # APPLICATION.  YOU ARE FREE TO SHARE THIS CODE SO LONG AS THE
 # AUTHOR(S) AND VERSION HISTORY REMAIN INTACT.
@@ -73,11 +73,7 @@ timestep=1 # timesteps are 1 year
 from=2 # start from the second year since the first year is an uncertain parameter
 to=hindcast_length #122
 
-timestep=1 # timesteps are 1 year
-from=2 # start from the second year since the first year is an uncertain parameter
-to=hindcast_length #122
-
-# Run differential evolution optimization to find initial starting values..
+# Run differential evolution optimization to find initial starting values...
 source("../Scripts/DEoptim_grinsted_model.R")      # physical model
 source("../Scripts/minimize_grinsted_residuals.R") # function to minimize the residuals
 
@@ -97,7 +93,7 @@ source("../Scripts/sealevel_grinsted_model.R")
 # Use the optimized parameters to generate a fit to the data.
 slr.est = grinsted_sealevel(deoptim.parameters, hist.temp)
 
-# Plot check that model simulation fits the data.
+# Plot check that the model simulation fits the data.
 #plot(year, slr, pch=20, ylab="Sea-level anomaly [m]", xlab="Year")
 #lines(year, slr.est$sle, col="blue", lwd=2)
 
@@ -214,7 +210,7 @@ gelman.diag(heterlist)
 # Remove the second MCMC run
 rm(mcmc.out1780, prechain1780, heter, heter2, heterlist)
 
-# set seed back to original
+# set seed back to the original
 set.seed(111)
 
 #-------------------------- Estimate Parameter PDFs & Median Estimates ----------------------------
@@ -240,7 +236,7 @@ heter.med.projection = grinsted_sealevel(heter.med, rcp85)
 
 # Thin the chain to a subset; ~20,000 is sufficient.
 heter_subset_length = 20000
-heter_sub_chain = hetChainBurnin[sample(nrow(hetChainBurnin), size=subset_length, replace=FALSE), ]
+heter_sub_chain = hetChainBurnin[sample(nrow(hetChainBurnin), size=heter_subset_length, replace=FALSE), ]
 
 ## Run multiple times with different seeds to check for convergence &
 ## robustness of the results:
@@ -256,7 +252,7 @@ par(mfrow=c(3,2))
 for(i in 1:6){
   plot(density(hetChainBurnin[ ,i]), type="l",
        xlab=paste('Parameter =',' ', parnames[i], sep=''), ylab="PDF", main="")
-  lines(density(sub_chain[ ,i]), col="red")
+  lines(density(heter_sub_chain[ ,i]), col="red")
 }
 dev.off()
 
@@ -270,19 +266,19 @@ sigma.heter.chain = heter_sub_chain[ ,5]
 rho.heter.chain = heter_sub_chain[ ,6]
 
 #----------------------------- Project Sea-level Rise with Uncertainty --------------------------------
-years.mod=(alltime) # all time represent the years from 1880 to 2300
+years.mod=(alltime) # alltime represents the years from 1880 to 2300
 nyears.mod=length(years.mod)
 to=projection_length #421
 
-# Set up empty matrices for sea level rate and sea level output.
+# Set up empty matrices for sea-level rate and sea-level output.
 proj.heter.Seq = mat.or.vec(heter_subset_length, nyears.mod) 
 proj.heter.RATE = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
 proj.heter.sim = mat.or.vec(heter_subset_length, nyears.mod) #(nr,nc)
 
-# Loop over the sea level model to generate a distribution of sea level rates
-# and sea level simulations.
+# Loop over the sea level model to generate a distribution of sea-level rates
+# and sea-level simulations.
 for(n in 1:heter_subset_length) {
-  # Estimate the sea level rate of change: equation (S18-S19)
+  # Estimate the sea-level rate of change: equation (S18-S19)
   proj.heter.Seq[n, ] = alpha.heter.chain[n]*rcp85 + beta.heter.chain[n]
   proj.heter.sim[n,1] = H_0.heter.chain[n] # initial value in 1880
   proj.heter.RATE[n,1] = (proj.heter.Seq[n,1] - proj.heter.sim[n,1])*tau.heter.chain[n]
@@ -316,7 +312,7 @@ for(i in 1:heter_subset_length) {
 source("../Scripts/plot_sf.r")
 
 # Set up a vector for the sea-level anomaly distribution in 2050.
-# The year 2050 is the 171 number in the sequence.
+# The year 2050 is the 171st number in the sequence.
 prob_proj2050_heter = mat.or.vec(heter_subset_length, 1)
 prob_proj2050_heter = SLR.projections.heter[ ,171]
 
@@ -332,7 +328,7 @@ survival2050_heter <- plot.sf(prob_proj2050_heter, make.plot=F)
 #---
 
 # Set up a vector for the sea-level anomaly distribution in 2100.
-# The year 2100 is the 221 number in the sequence.
+# The year 2100 is the 221st number in the sequence.
 prob_proj2100_heter = mat.or.vec(heter_subset_length, 1)
 prob_proj2100_heter = SLR.projections.heter[ ,221]
 
