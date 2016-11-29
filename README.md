@@ -11,6 +11,7 @@ This code is intended to accompany the results of
 ##Overview
 
 This code requires R with the following libraries:
+- adaptMCMC
 - mcmc
 - ncdf
 - coda
