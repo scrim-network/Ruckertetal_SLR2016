@@ -50,6 +50,7 @@ Required software:
     R (used R 3.2.1)
 
 Required libraries:
+    adaptMCMC
     mcmc
     ncdf or ncdf4
     coda
