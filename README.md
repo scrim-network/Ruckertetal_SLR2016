@@ -6,7 +6,7 @@ README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Wed Nov 30 09
 
 This code is intended to accompany the results of
 
->Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K (2016): The effects of time-varying observation errors on semi-empirical sea-level projections, Climatic Change, 1-12, DOI: [10.1007/s10584-016-1858-z](http://link.springer.com/article/10.1007%2Fs10584-016-1858-z).
+>Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K (2016): The effects of time-varying observation errors on semi-empirical sea-level projections, Climatic Change, 1-12, DOI: [10.1007/s10584-016-1858-z](http://link.springer.com/article/10.1007%2Fs10584-016-1858-z){:target="_blank"}.
 
 ##Overview
 
