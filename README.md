@@ -1,12 +1,12 @@
-#Global sea-level rise code for Ruckert et al. (accepted)
+#Global sea-level rise code for Ruckert et al. (2016)
 
-README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Mon Nov 21 15:05:51 EST 2016
+README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Wed Nov 30 09:40 EST 2016
 
 ##Citation
 
 This code is intended to accompany the results of
 
->Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K. The effects of time-varying observation errors on semi-empirical sea-level projections, (accepted at Climatic Change).
+>Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K (2016): The effects of time-varying observation errors on semi-empirical sea-level projections, Climatic Change, 1-12, DOI: 10.1007/s10584-016-1858-z.
 
 ##Overview
 
