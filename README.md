@@ -19,13 +19,13 @@ This R code is intended to help users who wish to work with the sea-level rise p
 ## Requirements
 ### Software
 These scripts are written to run in R (tested under R v3.2.1; https://www.r-project.org/). They also require mulitple packages including:  
->adaptMCMC
-mcmc
-ncdf
-coda
-RColorBrewer
-mvtnorm
-DEoptim
+>adaptMCMC  
+mcmc  
+ncdf  
+coda  
+RColorBrewer  
+mvtnorm  
+DEoptim  
 compiler
 
 You can install and open the packages in R as shown in the example below, which installs the lhs package.
@@ -37,7 +37,7 @@ library(adaptMCMC)
 
 ## Instructions
 * Download the RFILES folder.
-* Open the `.R` files in R or Rstudio and edit the paths to the files according to your directory.
+* Open the `.R` files in R or Rstudio and edit the paths to the files according to your directory structure.
 
 The RFILES directory contains all the scripts and data necessary to run the analysis along with a README file. _(Note that the user may have to edit the scripts according to their folder directory so that the scripts will locate the files/scripts needed to run. Additionally, the following empty folders need to be created before running the analysis: 'Workspace', 'Figures', 'SuppFigures', and 'ToyFigures'. The 'Workspace' must exist in each 'calibrate' folder. Output will be saved to these folders.)_
 
