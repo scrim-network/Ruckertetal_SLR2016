@@ -33,7 +33,7 @@ rahmfunction = function(parameters, Temp){ #inputs are parameters and temperatur
     
     # Extract parameter values
     a = parameters[1]             # sensitivity of sea-level to temperature changes
-    Ti = parameters[2]            # temperature when sea-level is zero
+    Ti = parameters[2]            # temperature when the sea-level anomaly is zero
     initialvalue = parameters[3]  # initial value of sea-level in 1880
     
     # Estimate the rate of sea-level change each year, Equation (S17)
