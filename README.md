@@ -1,13 +1,13 @@
-#Global sea-level rise code for Ruckert et al. (2016)
+# Global sea-level rise code for Ruckert et al. (2016)
 
 README file last updated by Kelsey Ruckert, klr324-at-psu-dot-edu, Wed Nov 30 09:40 EST 2016
 
-##Citation
+## Citation
 This code is intended to accompany the results of
 
 >Ruckert, KL, Guan, Y, Bakker AMR, Forest, FE, and Keller, K (2016): The effects of time-varying observation errors on semi-empirical sea-level projections, Climatic Change, 1-12, DOI: <a href="http://link.springer.com/article/10.1007%2Fs10584-016-1858-z" target="_blank">10.1007/s10584-016-1858-z</a>.
 
-##Overview
+## Overview
 This study explicitly quantifies how *"accounting for autocorrelation and heteroskedastic residuals affects SLR projections (especially in the upper tail)."* Testing and accounting for these known properties is important *"because they can impact the choice of the model-fitting method, parameter estimates, and projections."* Neglecting these properties can lead to not only low-biased sea-level projections, but more importantly, low-biased associated flood risk estimates.
 
 This R code is intended to help users who wish to work with the sea-level rise projections or methods shown in Ruckert et al. (2016) in greater detail than provided in the text and supplement. Key functionality of these scripts include:
@@ -45,7 +45,7 @@ Instructions on how to run the scripts can be found in the README file in the RF
 
 All of the **Toy** scripts are meant to show/teach how to fit a model using MCMC or the bootstrap method. Additionally, they were used to test bias in the surprise index. These files should be run line by line instead of sourced. Several files require the user to designate the length of observations.
 
-##Contact
+## Contact
 Kelsey Ruckert  
 E-mail: <klr324@psu.edu>  
 
